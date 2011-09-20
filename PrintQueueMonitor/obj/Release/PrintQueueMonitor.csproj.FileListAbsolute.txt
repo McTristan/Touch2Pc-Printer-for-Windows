@@ -1,0 +1,5 @@
+e:\Dropbox\Work\Visual Studio Projects\CBonnell.TouchPrintDaemon\PrintQueueMonitor\bin\Release\PrintQueueMonitor.dll
+e:\Dropbox\Work\Visual Studio Projects\CBonnell.TouchPrintDaemon\PrintQueueMonitor\bin\Release\PrintQueueMonitor.pdb
+e:\Dropbox\Work\Visual Studio Projects\CBonnell.TouchPrintDaemon\PrintQueueMonitor\obj\Release\ResolveAssemblyReference.cache
+e:\Dropbox\Work\Visual Studio Projects\CBonnell.TouchPrintDaemon\PrintQueueMonitor\obj\Release\PrintQueueMonitor.dll
+e:\Dropbox\Work\Visual Studio Projects\CBonnell.TouchPrintDaemon\PrintQueueMonitor\obj\Release\PrintQueueMonitor.pdb
