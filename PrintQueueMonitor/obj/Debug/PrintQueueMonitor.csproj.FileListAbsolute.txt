@@ -3,3 +3,8 @@ E:\Dropbox\Work\Visual Studio Projects\CBonnell.TouchPrintDaemon\PrintQueueMonit
 E:\Dropbox\Work\Visual Studio Projects\CBonnell.TouchPrintDaemon\PrintQueueMonitor\obj\Debug\ResolveAssemblyReference.cache
 E:\Dropbox\Work\Visual Studio Projects\CBonnell.TouchPrintDaemon\PrintQueueMonitor\obj\Debug\PrintQueueMonitor.dll
 E:\Dropbox\Work\Visual Studio Projects\CBonnell.TouchPrintDaemon\PrintQueueMonitor\obj\Debug\PrintQueueMonitor.pdb
+E:\Dropbox\Work\Visual Studio Projects\Touch2Pc\Touch2Pc-Printer-for-Windows\PrintQueueMonitor\bin\Debug\PrintQueueMonitor.dll
+E:\Dropbox\Work\Visual Studio Projects\Touch2Pc\Touch2Pc-Printer-for-Windows\PrintQueueMonitor\bin\Debug\PrintQueueMonitor.pdb
+E:\Dropbox\Work\Visual Studio Projects\Touch2Pc\Touch2Pc-Printer-for-Windows\PrintQueueMonitor\obj\Debug\ResolveAssemblyReference.cache
+E:\Dropbox\Work\Visual Studio Projects\Touch2Pc\Touch2Pc-Printer-for-Windows\PrintQueueMonitor\obj\Debug\PrintQueueMonitor.dll
+E:\Dropbox\Work\Visual Studio Projects\Touch2Pc\Touch2Pc-Printer-for-Windows\PrintQueueMonitor\obj\Debug\PrintQueueMonitor.pdb
