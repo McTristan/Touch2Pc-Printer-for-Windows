@@ -32,8 +32,11 @@ namespace Touch2PcPrinter
             this.acroRd32Path = acroRd32Path;
         }
 
-        public void Print(string pdfFilePath)
+        public void Print(string pdfFilePath, string sPrinterName)
         {
+            if (string.IsNullOrEmpty(sPrinterName))
+                sPrinterName = AcroPrinter.defaultPrinter.PrinterName;
+
             if (pdfFilePath == null)
             {
                 throw new ArgumentNullException("pdfFilePath");
@@ -63,12 +66,12 @@ namespace Touch2PcPrinter
             /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
              * The following Class PrintQueueMonitor was taken from an CodeProject-Project from Atom8 IT Solutions (P) Ltd which stands under the OPL-License (see http://www.codeproject.com/info/cpol10.aspx for licensing information)             * 
              * */
-            PrintQueueMonitor pqm = new PrintQueueMonitor(AcroPrinter.defaultPrinter.PrinterName); 
+            PrintQueueMonitor pqm = new PrintQueueMonitor(sPrinterName); 
             
             pqm.OnJobStatusChange += new PrintJobStatusChanged(pqm_OnJobStatusChange);
             si.FileName = this.acroRd32Path;
             si.Verb = "printto";
-            si.Arguments = String.Format(AcroPrinter.ARGUMENTS, pdfFilePath, AcroPrinter.defaultPrinter.PrinterName);
+            si.Arguments = String.Format(AcroPrinter.ARGUMENTS, pdfFilePath, sPrinterName);
             si.CreateNoWindow = true;
             si.RedirectStandardOutput = true;
             si.UseShellExecute = false;

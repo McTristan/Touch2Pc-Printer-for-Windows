@@ -23,9 +23,7 @@ namespace Touch2PcPrinter
                 return 1;
             }*/
             //..sla 19.09.2011 - no longer required as there is now an AppConfig-Setting
-
-            string programFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
+                  
             //sla 19.09.2011 - no longer required as there is now an AppConfig-Setting
             //string acroRd32Path = args[0];
             string acroRd32Path = ConfigurationManager.AppSettings["AdobeReaderPath"];
@@ -36,7 +34,12 @@ namespace Touch2PcPrinter
             }
             //..sla 19.09.2011 - no longer required as there is now an AppConfig-Setting
 
-            string outputFolder = Path.Combine(programFolder, "output");
+            string programFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            //sla 20.09.2011 - configurable output folder, issue #3
+            string outputFolder = ConfigurationManager.AppSettings["OutputPath"];            
+            if (string.IsNullOrEmpty(outputFolder)) // if none is given, fall back to the old scheme
+                outputFolder = Path.Combine(programFolder, "output");
+            //..sla 20.09.2011 - configurable output folder, issue #3
             if (!Directory.Exists(outputFolder))
             {
                 Directory.CreateDirectory(outputFolder);
@@ -44,15 +47,19 @@ namespace Touch2PcPrinter
             //sla 19.09.2011 - CleanUp files
             else
             {
-                string[] sFiles = Directory.GetFiles(outputFolder);
-                foreach (string sFile in sFiles)
+                //sla 20.09.2011 - CleanUp should be configurable - issue #4
+                if (Convert.ToBoolean(ConfigurationManager.AppSettings["CleanUpFiles"]))
                 {
-                    try
+                    string[] sFiles = Directory.GetFiles(outputFolder);
+                    foreach (string sFile in sFiles)
                     {
-                        File.Delete(sFile);
-                    }
-                    catch
-                    {
+                        try
+                        {
+                            File.Delete(sFile);
+                        }
+                        catch
+                        {
+                        }
                     }
                 }
             }
@@ -62,6 +69,12 @@ namespace Touch2PcPrinter
             var printJobServer = new PrintJobReader(outputFolder);
             var pdfConverter = new PdfConverter(programFolder);
             var acroPrinter = new AcroPrinter(acroRd32Path);
+
+            //sla 20.09.2011 PDF-only output - issue #2
+            bool bOnlyOutputToPDF = Convert.ToBoolean(ConfigurationManager.AppSettings["OnlyOutputPDF"]);
+            
+            //sla 20.09.2011 Configurable output printer - issue #1
+            string sPrinterName = ConfigurationManager.AppSettings["PrinterName"];
 
             Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
             Trace.TraceInformation("Starting print daemon...");
@@ -79,8 +92,14 @@ namespace Touch2PcPrinter
                     string tempPclPath = printJobServer.GetJob();
                     Trace.TraceInformation("Converting PCL file to PDF...");
                     string tempPdfPath = pdfConverter.ConvertToPdf(tempPclPath);
-                    Trace.TraceInformation("Sending PDF file to be printed to default printer...");
-                    acroPrinter.Print(tempPdfPath);
+                    
+                    //sla 20.09.2011 PDF-only output - issue #2
+                    if (!bOnlyOutputToPDF)
+                    {
+                        Trace.TraceInformation("Sending PDF file to be printed to default printer...");
+                        acroPrinter.Print(tempPdfPath, sPrinterName);
+                    }
+                    //..sla 20.09.2011 PDF-only output - issue #2
                     Trace.TraceInformation("Print job complete!");
                     File.Delete(tempPclPath);
                 }
