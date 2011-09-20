@@ -3,7 +3,7 @@
 using Lextm.SharpSnmpLib.Pipeline;
 using Lextm.SharpSnmpLib;
 
-namespace CBonnell.TouchPrintDaemon
+namespace Touch2PcPrinter
 {
     internal class PrinterDescriptionObject : ScalarObject
     {

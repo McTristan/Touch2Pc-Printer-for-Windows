@@ -5,7 +5,7 @@ using System.Text;
 using System.Diagnostics;
 using System.IO;
 
-namespace CBonnell.TouchPrintDaemon
+namespace Touch2PcPrinter
 {
     internal class PdfConverter
     {

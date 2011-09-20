@@ -7,7 +7,7 @@ using System.Drawing.Printing;
 using Atom8.Monitors;
 using System.Configuration;
 
-namespace CBonnell.TouchPrintDaemon
+namespace Touch2PcPrinter
 {
     internal class AcroPrinter
     {

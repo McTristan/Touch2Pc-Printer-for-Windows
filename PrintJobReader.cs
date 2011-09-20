@@ -7,7 +7,7 @@ using System.Net;
 using System.IO;
 using System.Diagnostics;
 
-namespace CBonnell.TouchPrintDaemon
+namespace Touch2PcPrinter
 {
     internal class PrintJobReader
     {

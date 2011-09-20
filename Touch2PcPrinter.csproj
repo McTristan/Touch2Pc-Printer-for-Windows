@@ -8,8 +8,8 @@
     <ProjectGuid>{241876A6-E484-445D-BF64-CBB2A4E175AE}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CBonnell.TouchPrintDaemon</RootNamespace>
-    <AssemblyName>CBonnell.TouchPrintDaemon</AssemblyName>
+    <RootNamespace>Touch2PcPrinter</RootNamespace>
+    <AssemblyName>Touch2PcPrinter</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>

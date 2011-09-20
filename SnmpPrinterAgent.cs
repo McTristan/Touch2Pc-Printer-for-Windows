@@ -6,7 +6,7 @@ using Lextm.SharpSnmpLib.Messaging;
 using Lextm.SharpSnmpLib.Pipeline;
 using System;
 
-namespace CBonnell.TouchPrintDaemon
+namespace Touch2PcPrinter
 {
     internal class SnmpPrinterAgent
     {

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CBonnell.TouchPrintDaemon", "CBonnell.TouchPrintDaemon.csproj", "{241876A6-E484-445D-BF64-CBB2A4E175AE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Touch2PcPrinter", "Touch2PcPrinter.csproj", "{241876A6-E484-445D-BF64-CBB2A4E175AE}"
 	ProjectSection(ProjectDependencies) = postProject
 		{237ED354-C209-41FC-AB28-037B68DC7A24} = {237ED354-C209-41FC-AB28-037B68DC7A24}
 	EndProjectSection

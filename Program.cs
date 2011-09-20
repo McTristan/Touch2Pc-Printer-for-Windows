@@ -4,7 +4,7 @@ using System.Reflection;
 using System.IO;
 using System.Configuration;
 
-namespace CBonnell.TouchPrintDaemon
+namespace Touch2PcPrinter
 {
     internal class Program
     {
@@ -19,7 +19,7 @@ namespace CBonnell.TouchPrintDaemon
             //sla 19.09.2011 - no longer required as there is now an AppConfig-Setting
             /*if (args.Length < 1)
             {
-                Console.Error.WriteLine("usage: CBonnell.TouchPrintDaemon.exe [Acrobat Reader Path (AcroRd32.exe)]");
+                Console.Error.WriteLine("usage: Touch2PcPrinter.exe [Acrobat Reader Path (AcroRd32.exe)]");
                 return 1;
             }*/
             //..sla 19.09.2011 - no longer required as there is now an AppConfig-Setting
