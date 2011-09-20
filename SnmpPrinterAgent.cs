@@ -36,12 +36,20 @@ namespace Touch2PcPrinter
         {
             this.engine.Listener.AddBinding(new IPEndPoint(IPAddress.Any, SnmpPrinterAgent.SNMP_PORT_NUMBER));
             this.engine.Listener.ExceptionRaised += this.engine_ExceptionRaised;
-            this.engine.Start();
+            this.engine.Start();            
         }
 
         private void engine_ExceptionRaised(object sender, ExceptionRaisedEventArgs e)
         {
             Trace.TraceError("Exception thrown from SNMP agent: {0}", e.Exception.Message);
         }
+
+        //sla 20.09.2011 - stop the engine if no longer needed - issue #6
+        internal void Stop()
+        {            
+            if (engine != null)
+                engine.Stop();
+        }
+        //..sla 20.09.2011 - stop the engine if no longer needed - issue #6
     }
 }

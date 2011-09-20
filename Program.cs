@@ -83,7 +83,7 @@ namespace Touch2PcPrinter
             Trace.TraceInformation("SNMP Agent started successfully");
             printJobServer.Start();
             Trace.TraceInformation("Print job listener started successfully");
-
+            
             while (true)
             {
                 try
@@ -92,7 +92,7 @@ namespace Touch2PcPrinter
                     string tempPclPath = printJobServer.GetJob();
                     Trace.TraceInformation("Converting PCL file to PDF...");
                     string tempPdfPath = pdfConverter.ConvertToPdf(tempPclPath);
-                    
+
                     //sla 20.09.2011 PDF-only output - issue #2
                     if (!bOnlyOutputToPDF)
                     {
@@ -107,7 +107,14 @@ namespace Touch2PcPrinter
                 {
                     Trace.TraceError("EXCEPTION OCCURRED: {0}", e.Message);
                 }
+                finally
+                {
+                    //sla 20.09.2011 - stop the engine if no longer needed - issue #6 - it is still not ideal
+                    snmpAgent.Stop();
+                }
             }
+
+            
         }
     }
 }
