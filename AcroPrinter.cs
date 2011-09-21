@@ -13,19 +13,17 @@ namespace Touch2PcPrinter
     {
         private const string ARGUMENTS = "/n /t \"{0}\" \"{1}\"";
         
-        private readonly string acroRd32Path;
-        private static readonly PrinterSettings defaultPrinter;
+        private readonly string acroRd32Path;        
 
         private static volatile bool m_bCloseAcrobat = false;
-        static AcroPrinter()
-        {
-            AcroPrinter.defaultPrinter = new PrinterSettings();
-        }
+        static AcroPrinter()        {            
+           
+        }            
 
 
         public AcroPrinter(string acroRd32Path)
         {
-            if (acroRd32Path == null)
+            if (string.IsNullOrEmpty(acroRd32Path))
             {
                 throw new ArgumentNullException("acroRd32Path");
             }
@@ -35,8 +33,25 @@ namespace Touch2PcPrinter
         public void Print(string pdfFilePath, string sPrinterName)
         {
             if (string.IsNullOrEmpty(sPrinterName))
-                sPrinterName = AcroPrinter.defaultPrinter.PrinterName;
+            {
+                //it's propably better to get the default printer with every new print job as it might have changed over time
+                PrinterSettings defaultPrinter = new PrinterSettings();
 
+                //sla 21.09.2011 - the following code shouldn't be needed but just in case - maybe it fixes issue #7
+                if (string.IsNullOrEmpty(defaultPrinter.PrinterName))
+                {
+                    PrinterSettings settings = new PrinterSettings();
+                    foreach (string printer in PrinterSettings.InstalledPrinters)
+                    {
+                        settings.PrinterName = printer;
+                        if (settings.IsDefaultPrinter)
+                            break;
+                    }
+                }
+                sPrinterName = defaultPrinter.PrinterName;
+            }
+            //..sla 21.09.2011
+                        
             if (pdfFilePath == null)
             {
                 throw new ArgumentNullException("pdfFilePath");
