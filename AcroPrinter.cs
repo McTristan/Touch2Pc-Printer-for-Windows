@@ -34,7 +34,7 @@ namespace Touch2PcPrinter
         {
             if (string.IsNullOrEmpty(sPrinterName))
             {
-                //it's propably better to get the default printer with every new print job as it might have changed over time
+                //it's propably better to get the default printer with every new print job as it might have changed over time 
                 PrinterSettings defaultPrinter = new PrinterSettings();
 
                 //sla 21.09.2011 - the following code shouldn't be needed but just in case - maybe it fixes issue #7
