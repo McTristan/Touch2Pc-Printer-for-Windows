@@ -32,6 +32,7 @@ namespace Touch2PcPrinter
 
         public void Print(string pdfFilePath, string sPrinterName)
         {
+            m_bCloseAcrobat = false; //sla 22.09.2011 - 2nd part of issue #8
             if (string.IsNullOrEmpty(sPrinterName))
             {
                 //it's propably better to get the default printer with every new print job as it might have changed over time 
@@ -108,6 +109,9 @@ namespace Touch2PcPrinter
 
                 catch (Exception) { }
             }
+
+            pqm.OnJobStatusChange -= new PrintJobStatusChanged(pqm_OnJobStatusChange);
+           
             p.Kill();
           
             //..sla 19.09.2011 - new approach to close the window after printing is complete + redirecting the standard-output so it might run from a service later on

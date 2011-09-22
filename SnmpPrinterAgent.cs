@@ -30,6 +30,7 @@ namespace Touch2PcPrinter
             var handlerMappings = new HandlerMapping[] { new HandlerMapping("v1", "GET", new GetV1MessageHandler()) };
             var appFactory = new SnmpApplicationFactory(SnmpPrinterAgent.printerObjects, new Version1MembershipProvider(UserName, UserName), new MessageHandlerFactory(handlerMappings));
             this.engine = new SnmpEngine(appFactory, new Listener(), new EngineGroup());
+            
         }
 
         public void Start()
@@ -46,9 +47,12 @@ namespace Touch2PcPrinter
 
         //sla 20.09.2011 - stop the engine if no longer needed - issue #6
         internal void Stop()
-        {            
+        {
             if (engine != null)
+            {
                 engine.Stop();
+                engine.Listener.ClearBindings(); //sla 22.09.2011 - 1st part of issue #8 - SNMP engine does not seem to get any messages
+            }
         }
         //..sla 20.09.2011 - stop the engine if no longer needed - issue #6
     }

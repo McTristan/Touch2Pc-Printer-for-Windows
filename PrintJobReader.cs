@@ -33,21 +33,29 @@ namespace Touch2PcPrinter
 
         public void Start()
         {
-            this.listener.Start();
+            this.listener.Start(10);
         }
+
+        //sla 22.09.2011 - 1st part of issue #8 - SNMP engine does not seem to get any messages
+        public void Stop()
+        {
+            this.listener.Stop();
+        }
+        //..sla 22.09.2011 - 1st part of issue #8 - SNMP engine does not seem to get any messages
 
         public string GetJob()
         {
             string filePath;
-            using (var client = this.listener.AcceptTcpClient())
+            using (TcpClient client = listener.AcceptTcpClient())
             {
                 do
                 {
                     filePath = Path.Combine(this.outputPath, Path.GetRandomFileName());
                 } while (File.Exists(filePath) || Directory.Exists(filePath));
-                using (var stream = File.OpenWrite(filePath))
+
+                using (FileStream stream = File.OpenWrite(filePath))
                 {
-                    var remoteIpData = (client.Client.RemoteEndPoint as IPEndPoint);
+                    IPEndPoint remoteIpData = (client.Client.RemoteEndPoint as IPEndPoint);
                     Trace.TraceInformation("Incoming print job from {0}:{1}", remoteIpData.Address, remoteIpData.Port);
                     byte[] buffer = new byte[4096];
                     int readCount = 0;
@@ -61,8 +69,11 @@ namespace Touch2PcPrinter
                         readCount += read;
                         stream.Write(buffer, 0, read);
                     } while (true);
+                    stream.Close();
+                    client.Close();
                     Trace.TraceInformation("Wrote print job file \"{0}\", {1} bytes in size", filePath, readCount);
                 }
+                
             }
             return filePath;
         }

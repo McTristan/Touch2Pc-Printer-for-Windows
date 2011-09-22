@@ -79,15 +79,19 @@ namespace Touch2PcPrinter
             Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
             Trace.TraceInformation("Starting print daemon...");
 
-            snmpAgent.Start();
-            Trace.TraceInformation("SNMP Agent started successfully");
-            printJobServer.Start();
-            Trace.TraceInformation("Print job listener started successfully");
-            
+           
             while (true)
             {
                 try
                 {
+                    //sla 22.09.2011 - 1st part of issue #8 - SNMP engine does not seem to get any messages
+                    snmpAgent.Start();
+                    Trace.TraceInformation("SNMP Agent started successfully");
+
+                    printJobServer.Start();
+                    Trace.TraceInformation("Print job listener started successfully");
+                    //..sla 22.09.2011 - 1st part of issue #8 - SNMP engine does not seem to get any messages
+
                     Trace.TraceInformation("Waiting for incoming job...");
                     string tempPclPath = printJobServer.GetJob();
                     Trace.TraceInformation("Converting PCL file to PDF...");
@@ -102,6 +106,11 @@ namespace Touch2PcPrinter
                     //..sla 20.09.2011 PDF-only output - issue #2
                     Trace.TraceInformation("Print job complete!");
                     File.Delete(tempPclPath);
+
+                    //sla 22.09.2011 - 1st part of issue #8 - SNMP engine does not seem to get any messages
+                    printJobServer.Stop();
+                    snmpAgent.Stop();
+                    //..sla 22.09.2011 - 1st part of issue #8 - SNMP engine does not seem to get any messages
                 }
                 catch (Exception e)
                 {
