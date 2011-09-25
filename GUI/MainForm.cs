@@ -41,19 +41,23 @@ namespace Touch2PcPrinter
             this.txtPdfProgramArgs.Text = this.config.PdfProgramArgs;
             this.txtJobTimeout.Text = this.config.JobTimeoutSeconds.ToString();
             this.chkStartServer.Checked = this.config.StartServerOnOpen;
-                        
+
             var printerNames = PrinterUtilities.RetrievePrinterNames();
             for (int i = 0; i < printerNames.Length; i++)
             {
-                this.cmbOutputPrinterBWND.Items.Add(printerNames[i]);
-                this.cmbOutputPrinterBWD.Items.Add(printerNames[i]);
-                this.cmbOutputPrinterCOLND.Items.Add(printerNames[i]);
-                this.cmbOutputPrinterCOLD.Items.Add(printerNames[i]);
+                this.cmbOutputPrinterBWND.Items.Add( printerNames[i].Name);                
+                this.cmbOutputPrinterBWD.Items.Add(printerNames[i].Name);
+                
+                /*if (string.Compare(config.OutputPrinterBWD, printerNames[i].Name, true) == 0)
+                    cmbOutputPrinterBWD.SelectedIndex = i;*/
+
+                this.cmbOutputPrinterCOLND.Items.Add(printerNames[i].Name);
+                this.cmbOutputPrinterCOLD.Items.Add(printerNames[i].Name);
             }
-            cmbOutputPrinterBWD.SelectedValue = config.OutputPrinterBWD;
-            cmbOutputPrinterBWND.SelectedValue = config.OutputPrinterBWND;
-            cmbOutputPrinterCOLD.SelectedValue = config.OutputPrinterCOLD;
-            cmbOutputPrinterCOLND.SelectedValue = config.OutputPrinterCOLND;
+            cmbOutputPrinterBWD.SelectedItem = config.OutputPrinterBWD;
+            cmbOutputPrinterBWND.SelectedItem = config.OutputPrinterBWND;
+            cmbOutputPrinterCOLD.SelectedItem = config.OutputPrinterCOLD;
+            cmbOutputPrinterCOLND.SelectedItem = config.OutputPrinterCOLND;
                         
             if (this.cmbOutputPrinterBWD.SelectedIndex < 0)
             {
@@ -134,10 +138,10 @@ namespace Touch2PcPrinter
 
             this.config.OutputFolder = this.txtOutputFolder.Text;
 
-            this.config.OutputPrinterBWD = ((Printer)this.cmbOutputPrinterBWD.SelectedItem).Name;
-            this.config.OutputPrinterBWND = ((Printer)this.cmbOutputPrinterBWND.SelectedItem).Name;
-            this.config.OutputPrinterCOLD = ((Printer)this.cmbOutputPrinterCOLD.SelectedItem).Name;
-            this.config.OutputPrinterCOLND = ((Printer)this.cmbOutputPrinterCOLND.SelectedItem).Name;
+            this.config.OutputPrinterBWD = cmbOutputPrinterBWD.SelectedItem.ToString();
+            this.config.OutputPrinterBWND = cmbOutputPrinterBWND.SelectedItem.ToString();
+            this.config.OutputPrinterCOLD = cmbOutputPrinterCOLD.SelectedItem.ToString();
+            this.config.OutputPrinterCOLND = cmbOutputPrinterCOLND.SelectedItem.ToString();
 
             this.config.PdfProgramPath = this.txtPdfProgram.Text;
             this.config.PdfProgramArgs = this.txtPdfProgramArgs.Text;
