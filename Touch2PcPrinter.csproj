@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{241876A6-E484-445D-BF64-CBB2A4E175AE}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Touch2PcPrinter</RootNamespace>
     <AssemblyName>Touch2PcPrinter</AssemblyName>
@@ -49,6 +49,9 @@
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Touch2PcPrinter.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="SharpSnmpLib">
       <HintPath>depends\SharpSnmpLib.dll</HintPath>
@@ -57,6 +60,7 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -64,19 +68,38 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AcroPrinter.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="GUI\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\MainForm.designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IPrintServerComponent.cs" />
     <Compile Include="PdfConverter.cs" />
+    <Compile Include="PdfPrinter.cs" />
+    <Compile Include="PrinterUtilities.cs" />
     <Compile Include="PrintJobReader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server.cs" />
     <Compile Include="SnmpObjects.cs" />
     <Compile Include="SnmpPrinterAgent.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Additional Files\COPYING">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Additional Files\Touch2Pc Printer for Windows Help.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Additional Files\Touch2Pc Printer for Windows.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="pcl6.exe">
+    <None Include="Additional Files\pcl6.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -107,6 +130,17 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Additional Files\legal.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="printer.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="GUI\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

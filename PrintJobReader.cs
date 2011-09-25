@@ -1,4 +1,22 @@
-﻿using System;
+﻿/* Copyright 2011 Corey Bonnell
+
+   This file is part of Touch2PcPrinter for Windows.
+
+    Touch2PcPrinter for Windows is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Touch2PcPrinter for Windows is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Touch2PcPrinter for Windows.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +24,7 @@ using System.Net.Sockets;
 using System.Net;
 using System.IO;
 using System.Diagnostics;
+using System.Threading;
 
 namespace Touch2PcPrinter
 {
@@ -27,53 +46,50 @@ namespace Touch2PcPrinter
         private const int UTF16_HEADER_SIZE = 0x1A2;
 
         private readonly TcpListener listener;
-        private readonly string outputPath;
+        private readonly Action<string> logger;
+        private readonly CancellationToken cancelToken;
 
-        //sla 24.09.2011 - Color- & Duplex-Mode
         public eColorMode ColorMode { get; set; }
         public eDuplexMode DuplexMode { get; set; }
-        //..sla 24.09.2011 - Color- & Duplex-Mode
 
-        public PrintJobReader(string outputPath)
+        public PrintJobReader(Action<string> logger, CancellationToken cancelToken)
         {
-            if (outputPath == null)
+            if (logger == null)
             {
-                throw new ArgumentNullException("outputPath");
+                throw new ArgumentNullException("logger");
             }
-            if (!Directory.Exists(outputPath))
-            {
-                throw new DirectoryNotFoundException(String.Format("Directory not found: {0}", outputPath));
-            }
-            this.outputPath = outputPath;
+            this.logger = logger;
+            this.cancelToken = cancelToken;
             this.listener = new TcpListener(IPAddress.Any, PrintJobReader.JOB_LISTEN_PORT);
         }
 
         public void Start()
         {
-            this.listener.Start(10);
+            this.listener.Start();
         }
 
-        //sla 22.09.2011 - 1st part of issue #8 - SNMP engine does not seem to get any messages
         public void Stop()
         {
             this.listener.Stop();
         }
-        //..sla 22.09.2011 - 1st part of issue #8 - SNMP engine does not seem to get any messages
+
+        public void Dispose() { }
 
         public string GetJob()
         {
             string filePath;
-            using (TcpClient client = listener.AcceptTcpClient())
+            do
             {
-                do
+                Thread.Sleep(250);
+                this.cancelToken.ThrowIfCancellationRequested();
+            } while (!this.listener.Pending());
+            using (var client = this.listener.AcceptTcpClient())
+            {
+                filePath = Path.GetTempFileName();
+                using (var stream = File.OpenWrite(filePath))
                 {
-                    filePath = Path.Combine(this.outputPath, Path.GetRandomFileName());
-                } while (File.Exists(filePath) || Directory.Exists(filePath));
-
-                using (FileStream stream = File.OpenWrite(filePath))
-                {
-                    IPEndPoint remoteIpData = (client.Client.RemoteEndPoint as IPEndPoint);
-                    Trace.TraceInformation("Incoming print job from {0}:{1}", remoteIpData.Address, remoteIpData.Port);
+                    var remoteIpData = (client.Client.RemoteEndPoint as IPEndPoint);
+                    this.logger.Invoke(String.Format("Incoming print job from {0}:{1}", remoteIpData.Address, remoteIpData.Port));
                     byte[] buffer = new byte[4096];
                     int readCount = 0;
                     do
@@ -86,12 +102,7 @@ namespace Touch2PcPrinter
                         readCount += read;
                         stream.Write(buffer, 0, read);
                     } while (true);
-
-                    Trace.TraceInformation("Wrote print job file \"{0}\", {1} bytes in size", filePath, readCount);
-
-                    stream.Close();
-
-                    client.Close();
+                   this.logger.Invoke(String.Format("Wrote print job file \"{0}\", {1} bytes in size", filePath, readCount));
                 }
 
                 using (FileStream stream = File.OpenRead(filePath))
@@ -122,8 +133,8 @@ namespace Touch2PcPrinter
                         }
                     }
 
-                    Trace.TraceInformation("Duplex set to: " + System.Enum.GetName(typeof(eDuplexMode), DuplexMode));
-                    Trace.TraceInformation("ColorMode set to: " + System.Enum.GetName(typeof(eColorMode), ColorMode));                    
+                    this.logger.Invoke("Duplex set to: " + System.Enum.GetName(typeof(eDuplexMode), DuplexMode));
+                    this.logger.Invoke("ColorMode set to: " + System.Enum.GetName(typeof(eColorMode), ColorMode));                    
               
                 }
                 

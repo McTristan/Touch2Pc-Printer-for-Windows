@@ -1,14 +1,31 @@
-﻿using System.Diagnostics;
+﻿/* Copyright 2011 Corey Bonnell
+
+   This file is part of Touch2PcPrinter for Windows.
+
+    Touch2PcPrinter for Windows is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Touch2PcPrinter for Windows is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Touch2PcPrinter for Windows.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+using System;
 using System.Net;
 
 using Lextm.SharpSnmpLib;
 using Lextm.SharpSnmpLib.Messaging;
 using Lextm.SharpSnmpLib.Pipeline;
-using System;
 
 namespace Touch2PcPrinter
 {
-    internal class SnmpPrinterAgent
+    internal class SnmpPrinterAgent : IPrintServerComponent
     {
         private const string COMMUNITY_NAME = "public";
         private static readonly OctetString UserName = new OctetString(COMMUNITY_NAME);
@@ -16,6 +33,7 @@ namespace Touch2PcPrinter
         private const int SNMP_PORT_NUMBER = 161;
 
         private readonly SnmpEngine engine;
+        private readonly Action<string> logger;
 
         static SnmpPrinterAgent()
         {
@@ -25,8 +43,14 @@ namespace Touch2PcPrinter
             SnmpPrinterAgent.printerObjects.Add(new PrinterErrorBitsObject());
         }
 
-        public SnmpPrinterAgent()
+        public SnmpPrinterAgent(Action<string> logger)
         {
+            if (logger == null)
+            {
+                throw new ArgumentNullException("logger");
+            }
+            this.logger = logger;
+
             var handlerMappings = new HandlerMapping[] { new HandlerMapping("v1", "GET", new GetV1MessageHandler()) };
             var appFactory = new SnmpApplicationFactory(SnmpPrinterAgent.printerObjects, new Version1MembershipProvider(UserName, UserName), new MessageHandlerFactory(handlerMappings));
             this.engine = new SnmpEngine(appFactory, new Listener(), new EngineGroup());
@@ -37,23 +61,33 @@ namespace Touch2PcPrinter
         {
             this.engine.Listener.AddBinding(new IPEndPoint(IPAddress.Any, SnmpPrinterAgent.SNMP_PORT_NUMBER));
             this.engine.Listener.ExceptionRaised += this.engine_ExceptionRaised;
-            this.engine.Start();            
+            this.engine.Start();
+        }
+
+        public void Stop()
+        {
+            this.engine.Stop();
         }
 
         private void engine_ExceptionRaised(object sender, ExceptionRaisedEventArgs e)
         {
-            Trace.TraceError("Exception thrown from SNMP agent: {0}", e.Exception.Message);
+            this.logger.Invoke(String.Format("Exception thrown from SNMP agent: {0}", e.Exception));
         }
 
-        //sla 20.09.2011 - stop the engine if no longer needed - issue #6
-        internal void Stop()
+        private bool disposed = false;
+        public void Dispose()
         {
-            if (engine != null)
+            if (this.disposed)
             {
+				return;
+			}
+			
+			if (engine != null)
+			{
                 engine.Stop();
                 engine.Listener.ClearBindings(); //sla 22.09.2011 - 1st part of issue #8 - SNMP engine does not seem to get any messages
             }
+            this.engine.Dispose();
         }
-        //..sla 20.09.2011 - stop the engine if no longer needed - issue #6
     }
 }
