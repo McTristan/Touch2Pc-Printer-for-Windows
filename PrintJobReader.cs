@@ -105,39 +105,44 @@ namespace Touch2PcPrinter
                    this.logger.Invoke(String.Format("Wrote print job file \"{0}\", {1} bytes in size", filePath, readCount));
                 }
 
-                using (FileStream stream = File.OpenRead(filePath))
+                try
                 {
-                    stream.Seek(0x36, SeekOrigin.Begin); // get Duplexmode
-                    byte[] bArray = new byte[2];
-                    if (stream.Read(bArray, 0, 2) == 2)
+                    using (FileStream stream = File.OpenRead(filePath))
                     {
-                        if (bArray[0] == 0x4F && bArray[1] == 0x4E)
-                            DuplexMode = eDuplexMode.Duplex;
-                    }
-
-                    bArray = new byte[3];
-                    stream.Seek(0, SeekOrigin.Begin); // get BlackWhite
-                    for (int i = 0; i <= 512; i++)
-                    {
-                        if (stream.ReadByte() == 0x26)
+                        stream.Seek(0x36, SeekOrigin.Begin); // get Duplexmode
+                        byte[] bArray = new byte[2];
+                        if (stream.Read(bArray, 0, 2) == 2)
                         {
-                            if (stream.Read(bArray, 0, 3) == 3) //should contain "&b1M" for Black/White
-                            {
-                                if (bArray[0] == 0x62 && bArray[1] == 0x31 && bArray[2] == 0x4D)
-                                {
-                                    ColorMode = eColorMode.BlackWhite;                                    
-                                }
-                            }
-                            else
-                                stream.Seek(-2, SeekOrigin.Current);
+                            if (bArray[0] == 0x4F && bArray[1] == 0x4E)
+                                DuplexMode = eDuplexMode.Duplex;
                         }
-                    }
 
-                    this.logger.Invoke("Duplex set to: " + System.Enum.GetName(typeof(eDuplexMode), DuplexMode));
-                    this.logger.Invoke("ColorMode set to: " + System.Enum.GetName(typeof(eColorMode), ColorMode));                    
-              
+                        bArray = new byte[3];
+                        stream.Seek(0, SeekOrigin.Begin); // get BlackWhite
+                        for (int i = 0; i <= 512; i++)
+                        {
+                            if (stream.ReadByte() == 0x26)
+                            {
+                                if (stream.Read(bArray, 0, 3) == 3) //should contain "&b1M" for Black/White
+                                {
+                                    if (bArray[0] == 0x62 && bArray[1] == 0x31 && bArray[2] == 0x4D)
+                                    {
+                                        ColorMode = eColorMode.BlackWhite;
+                                    }
+                                }
+                                else
+                                    stream.Seek(-2, SeekOrigin.Current);
+                            }
+                        }
+
+                        this.logger.Invoke("Duplex set to: " + System.Enum.GetName(typeof(eDuplexMode), DuplexMode));
+                        this.logger.Invoke("ColorMode set to: " + System.Enum.GetName(typeof(eColorMode), ColorMode));
+
+                    }
                 }
-                
+                catch
+                {
+                }
             }
             return filePath;
         }
