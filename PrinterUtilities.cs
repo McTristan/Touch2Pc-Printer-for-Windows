@@ -24,28 +24,9 @@ namespace Touch2PcPrinter
 {
     internal static class PrinterUtilities
     {
-        private const string VIRTUAL_PDF_PRINTER_NAME = "[None - Only Generate PDF]";
-
-        public static string VirtualPdfPrinterName
-        {
-            get
-            {
-                return PrinterUtilities.VIRTUAL_PDF_PRINTER_NAME;
-            }
-        }
-
-        public static Printer VirtualPdfPrinter
-        {
-            get
-            {
-                return new Printer(PrinterUtilities.VIRTUAL_PDF_PRINTER_NAME, false);
-            }
-        }
-
         public static Printer[] RetrievePrinterNames()
         {
             var printerEntries = new List<Printer>();
-            printerEntries.Add(PrinterUtilities.VirtualPdfPrinter);
             var defaultPrinterName = new PrinterSettings().PrinterName;
             foreach (string printerName in PrinterSettings.InstalledPrinters)
             {

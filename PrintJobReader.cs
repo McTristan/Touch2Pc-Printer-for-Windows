@@ -17,40 +17,21 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net.Sockets;
-using System.Net;
 using System.IO;
-using System.Diagnostics;
+using System.Net;
+using System.Net.Sockets;
 using System.Threading;
+using System.Text;
 
 namespace Touch2PcPrinter
 {
-    enum eColorMode
-    {
-        Color = 0,
-        BlackWhite = 1
-    }
-
-    enum eDuplexMode
-    {
-        NonDuplex = 0,
-        Duplex = 1
-    }
-
-    internal class PrintJobReader
+    internal class PrintJobReader : IPrintServerComponent
     {
         private const int JOB_LISTEN_PORT = 9100;
-        private const int UTF16_HEADER_SIZE = 0x1A2;
 
         private readonly TcpListener listener;
         private readonly Action<string> logger;
         private readonly CancellationToken cancelToken;
-
-        public eColorMode ColorMode { get; set; }
-        public eDuplexMode DuplexMode { get; set; }
 
         public PrintJobReader(Action<string> logger, CancellationToken cancelToken)
         {
@@ -75,7 +56,7 @@ namespace Touch2PcPrinter
 
         public void Dispose() { }
 
-        public string GetJob()
+        public string ReadJobToFile()
         {
             string filePath;
             do
@@ -104,47 +85,57 @@ namespace Touch2PcPrinter
                     } while (true);
                    this.logger.Invoke(String.Format("Wrote print job file \"{0}\", {1} bytes in size", filePath, readCount));
                 }
-
-                try
-                {
-                    using (FileStream stream = File.OpenRead(filePath))
-                    {
-                        stream.Seek(0x36, SeekOrigin.Begin); // get Duplexmode
-                        byte[] bArray = new byte[2];
-                        if (stream.Read(bArray, 0, 2) == 2)
-                        {
-                            if (bArray[0] == 0x4F && bArray[1] == 0x4E)
-                                DuplexMode = eDuplexMode.Duplex;
-                        }
-
-                        bArray = new byte[3];
-                        stream.Seek(0, SeekOrigin.Begin); // get BlackWhite
-                        for (int i = 0; i <= 512; i++)
-                        {
-                            if (stream.ReadByte() == 0x26)
-                            {
-                                if (stream.Read(bArray, 0, 3) == 3) //should contain "&b1M" for Black/White
-                                {
-                                    if (bArray[0] == 0x62 && bArray[1] == 0x31 && bArray[2] == 0x4D)
-                                    {
-                                        ColorMode = eColorMode.BlackWhite;
-                                    }
-                                }
-                                else
-                                    stream.Seek(-2, SeekOrigin.Current);
-                            }
-                        }
-
-                        this.logger.Invoke("Duplex set to: " + System.Enum.GetName(typeof(eDuplexMode), DuplexMode));
-                        this.logger.Invoke("ColorMode set to: " + System.Enum.GetName(typeof(eColorMode), ColorMode));
-
-                    }
-                }
-                catch
-                {
-                }
             }
             return filePath;
         }
+
+        private const int DUPLEX_SETTING_OFFSET = 0x36;
+        private const string DUPLEX_SETTING_STRING = "ON";
+        private const int SEARCH_SIZE = 512;
+        private const string BLACK_WHITE_STRING = "&b1M";
+
+        public static PrintJobProperties GetProperties(string pclFilePath)
+        {
+            if (pclFilePath == null)
+            {
+                throw new ArgumentNullException("pclFilePath");
+            }
+            byte[] initialBytes = new byte[PrintJobReader.SEARCH_SIZE];
+            using (var stream = File.OpenRead(pclFilePath))
+            {
+                int totalRead = 0;
+                do
+                {
+                    int read = stream.Read(initialBytes, totalRead, initialBytes.Length - totalRead);
+                    if (read < 1)
+                    {
+                        throw new EndOfStreamException("PCL file is too small, cannot read job properties");
+                    }
+                    totalRead += read;
+                } while (totalRead < PrintJobReader.SEARCH_SIZE);
+            }
+            PlexMode plexMode;
+            ColorMode colorMode;
+
+            if (String.Equals(PrintJobReader.DUPLEX_SETTING_STRING, Encoding.ASCII.GetString(initialBytes, PrintJobReader.DUPLEX_SETTING_OFFSET, DUPLEX_SETTING_STRING.Length), StringComparison.Ordinal))
+            {
+                plexMode = PlexMode.Duplex;
+            }
+            else
+            {
+                plexMode = PlexMode.Simplex;
+            }
+            string searchString = Encoding.ASCII.GetString(initialBytes);
+            if (searchString.Contains(PrintJobReader.BLACK_WHITE_STRING))
+            {
+                colorMode = ColorMode.BlackAndWhite;
+            }
+            else
+            {
+                colorMode = ColorMode.Color;
+            }
+            return new PrintJobProperties(colorMode, plexMode);
+        }
+
     }
 }

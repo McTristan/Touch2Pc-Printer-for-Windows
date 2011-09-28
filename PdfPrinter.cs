@@ -47,14 +47,13 @@ namespace Touch2PcPrinter
             {
                 throw new ArgumentNullException("pdfProgramArgs");
             }
-            
             if (printTimeout < 0)
             {
                 throw new ArgumentOutOfRangeException("printTimeout");
             }
             this.logger = logger;
             this.pdfProgramPath = pdfProgramPath;
-            this.pdfProgramArgs = pdfProgramArgs;         
+            this.pdfProgramArgs = pdfProgramArgs;
             this.printTimeout = printTimeout;
             this.cancelToken = cancelToken;
         }
@@ -65,18 +64,22 @@ namespace Touch2PcPrinter
 
         public void Dispose() { }
 
-        public void Print(string pdfFilePath, string printerName)
+        public void Print(string pdfFilePath, string outputPrinter)
         {
             if (pdfFilePath == null)
             {
                 throw new ArgumentNullException("pdfFilePath");
+            }
+            if (outputPrinter == null)
+            {
+                throw new ArgumentNullException("printerName");
             }
             PrintQueueMonitor printMonitor = null;
             PrintJobStatusChanged jobStatusChanged = null;
             try
             {
                 bool jobCompleted = false;
-                printMonitor = new PrintQueueMonitor(printerName);
+                printMonitor = new PrintQueueMonitor(outputPrinter);
                 jobStatusChanged = (object sender, PrintJobChangeEventArgs e) =>
                 {
                     if((int)(e.JobStatus & (JOBSTATUS.JOB_STATUS_PRINTING | JOBSTATUS.JOB_STATUS_PRINTED)) != 0)
@@ -89,10 +92,10 @@ namespace Touch2PcPrinter
                 var p = new Process();
                 var si = p.StartInfo;
                 si.FileName = this.pdfProgramPath;
-                si.Arguments = String.Format(this.pdfProgramArgs, pdfFilePath, printerName);
+                si.Arguments = String.Format(this.pdfProgramArgs, pdfFilePath, outputPrinter);
                 si.UseShellExecute = false;
 
-                this.logger.Invoke(String.Format("Starting \"{0}\" for printing to \"{1}\"...", Path.GetFileName(this.pdfProgramPath), printerName));
+                this.logger.Invoke(String.Format("Starting \"{0}\" for printing to \"{1}\"...", Path.GetFileName(this.pdfProgramPath), outputPrinter));
 
                 p.Start();
                 p.WaitForInputIdle();

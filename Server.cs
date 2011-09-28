@@ -20,6 +20,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace Touch2PcPrinter
 {
@@ -32,6 +33,7 @@ namespace Touch2PcPrinter
         private readonly PrintJobReader printJobReader;
         private readonly SnmpPrinterAgent snmpAgent;
         private readonly PdfPrinter pdfPrinter;
+        private readonly Dictionary<PrintJobProperties, string> propertyMappings = new Dictionary<PrintJobProperties, string>();
 
         public Server(Action<string> logger, CancellationToken cancelToken, Configuration config)
         {
@@ -51,16 +53,33 @@ namespace Touch2PcPrinter
             this.pdfConverter = new PdfConverter(this.logger, programFolder, this.config.OutputFolder);
             this.printJobReader = new PrintJobReader(this.logger, this.cancelToken);
             this.snmpAgent = new SnmpPrinterAgent(this.logger);
-            if (!String.Equals(this.config.OutputPrinterBWND, PrinterUtilities.VirtualPdfPrinterName, StringComparison.InvariantCultureIgnoreCase))
+            if (!this.config.VirtualOnly)
             {
                 this.pdfPrinter = new PdfPrinter(this.logger, this.config.PdfProgramPath, this.config.PdfProgramArgs, this.config.JobTimeoutSeconds, this.cancelToken);
             }
+            this.createJobPropertyMappings();
+        }
+
+        private void createJobPropertyMappings()
+        {
+            this.propertyMappings.Add(new PrintJobProperties(ColorMode.BlackAndWhite, PlexMode.Simplex), this.config.OutputPrinterBlackWhiteSimplex);
+            this.propertyMappings.Add(new PrintJobProperties(ColorMode.BlackAndWhite, PlexMode.Duplex), this.config.OutputPrinterBlackWhiteDuplex);
+            this.propertyMappings.Add(new PrintJobProperties(ColorMode.Color, PlexMode.Simplex), this.config.OutputPrinterColorSimplex);
+            this.propertyMappings.Add(new PrintJobProperties(ColorMode.Color, PlexMode.Duplex), this.config.OutputPrinterColorDuplex);
         }
 
         private void logConfiguration()
         {
             this.logger.Invoke(String.Format("Output folder: {0}", this.config.OutputFolder));
-            this.logger.Invoke(String.Format("Output printer: {0}", this.config.OutputPrinterBWND));
+            this.logger.Invoke(String.Format("Output to PDF file only: {0}", this.config.VirtualOnly));
+            if (!this.config.VirtualOnly)
+            {
+                this.logger.Invoke(String.Format("Output simplex black & white printer: {0}", this.config.OutputPrinterBlackWhiteSimplex));
+                this.logger.Invoke(String.Format("Output duplex black & white printer: {0}", this.config.OutputPrinterBlackWhiteDuplex));
+                this.logger.Invoke(String.Format("Output simplex color printer: {0}", this.config.OutputPrinterColorSimplex));
+                this.logger.Invoke(String.Format("Output duplex color printer: {0}", this.config.OutputPrinterColorDuplex));
+            }
+            
             this.logger.Invoke(String.Format("PDF program path: {0}", this.config.PdfProgramPath));
             this.logger.Invoke(String.Format("PDF program arguments: {0}", this.config.PdfProgramArgs));
             this.logger.Invoke(String.Format("Job timeout: {0} second(s)", this.config.JobTimeoutSeconds));
@@ -122,10 +141,11 @@ namespace Touch2PcPrinter
                 try
                 {
                     this.logger.Invoke("Waiting for incoming job...");
-                    tempPclPath = this.printJobReader.GetJob();
+                    tempPclPath = this.printJobReader.ReadJobToFile();
+                    var jobProperties = PrintJobReader.GetProperties(tempPclPath);
                     this.logger.Invoke("Converting PCL file to PDF...");
                     try
-                    {                        
+                    {
                         tempPdfPath = pdfConverter.ConvertToPdf(tempPclPath);
                     }
                     finally
@@ -133,33 +153,31 @@ namespace Touch2PcPrinter
                         this.logger.Invoke("Deleting temporary PCL file...");
                         File.Delete(tempPclPath);
                     }
-                    if (String.Equals(this.config.OutputPrinterBWND, PrinterUtilities.VirtualPdfPrinterName, StringComparison.InvariantCultureIgnoreCase))
+                    if (this.pdfPrinter == null)
                     {
                         continue;
                     }
                     // if we're here, then the user selected a printer to physically print to
+                    this.logger.Invoke(String.Format("Color mode for job: {0}", jobProperties.ColorMode));
+                    this.logger.Invoke(String.Format("Duplex/simplex mode for job: {0}", jobProperties.PlexMode));
+                    string outputPrinterName;
+                    if (!this.propertyMappings.TryGetValue(jobProperties, out outputPrinterName))
+                    {
+                        throw new InvalidOperationException("Unsupported print job properties");
+                    }
+
                     this.logger.Invoke("Sending PDF file to be printed...");
                     try
                     {
-                        string sPrinter = config.OutputPrinterBWND;
-
-                        switch (printJobReader.ColorMode)
+                        if (outputPrinterName == null)
                         {
-                            case eColorMode.BlackWhite:
-                                if (printJobReader.DuplexMode == eDuplexMode.Duplex)
-                                    sPrinter = config.OutputPrinterBWD;
-                                else
-                                    sPrinter = config.OutputPrinterBWND;
-                                break;
-                            case eColorMode.Color:
-                                if (printJobReader.DuplexMode == eDuplexMode.Duplex)
-                                    sPrinter = config.OutputPrinterCOLD;
-                                else
-                                    sPrinter = config.OutputPrinterCOLND;
-                                break;
+                            this.logger.Invoke("ERROR: No printer selected for the print job's properties");
                         }
-                        this.pdfPrinter.Print(tempPdfPath, sPrinter);
-                        this.logger.Invoke("Print job complete!");
+                        else
+                        {
+                            this.pdfPrinter.Print(tempPdfPath, outputPrinterName);
+                            this.logger.Invoke("Print job complete!");
+                        }
                     }
                     finally
                     {
@@ -171,10 +189,6 @@ namespace Touch2PcPrinter
                 catch (Exception e)
                 {
                     this.logger.Invoke(String.Format("EXCEPTION OCCURRED: {0}", e));
-                }
-                finally
-                {
-
                 }
             }
         }

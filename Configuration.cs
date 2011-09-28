@@ -29,6 +29,7 @@ namespace Touch2PcPrinter
         private const string DEFAULT_PDF_ARGS = "/t \"{0}\" \"{1}\"";
         private const int DEFAULT_JOB_TIMEOUT = 120;
         private const string DEFAULT_START_SERVER = "false";
+        private const string DEFAULT_VIRTUAL_PDF = "false";
 
         [UserScopedSetting()]
         [DefaultSettingValue(Configuration.DEFAULT_START_SERVER)]
@@ -45,54 +46,68 @@ namespace Touch2PcPrinter
         }
 
         [UserScopedSetting()]
-        public string OutputPrinterBWD
+        [DefaultSettingValue(Configuration.DEFAULT_VIRTUAL_PDF)]
+        public bool VirtualOnly
         {
             get
             {
-                return this["OutputPrinterBWD"] as String ?? PrinterUtilities.VirtualPdfPrinterName;
+                return Convert.ToBoolean(this["VirtualOnly"]);
             }
             set
             {
-                this["OutputPrinterBWD"] = value;
+                this["VirtualOnly"] = value;
             }
         }
 
         [UserScopedSetting()]
-        public string OutputPrinterBWND
+        public string OutputPrinterBlackWhiteSimplex
         {
             get
             {
-                return this["OutputPrinterBWND"] as String ?? PrinterUtilities.VirtualPdfPrinterName;
+                return this["OutputPrinterBlackWhiteSimplex"] as String;
             }
             set
             {
-                this["OutputPrinterBWND"] = value;
+                this["OutputPrinterBlackWhiteSimplex"] = value;
             }
         }
 
         [UserScopedSetting()]
-        public string OutputPrinterCOLD
+        public string OutputPrinterBlackWhiteDuplex
         {
             get
             {
-                return this["OutputPrinterCOLD"] as String ?? PrinterUtilities.VirtualPdfPrinterName;
+                return this["OutputPrinterBlackWhiteDuplex"] as String;
             }
             set
             {
-                this["OutputPrinterCOLD"] = value;
+                this["OutputPrinterBlackWhiteDuplex"] = value;
             }
         }
 
         [UserScopedSetting()]
-        public string OutputPrinterCOLND
+        public string OutputPrinterColorSimplex
         {
             get
             {
-                return this["OutputPrinterCOLND"] as String ?? PrinterUtilities.VirtualPdfPrinterName;
+                return this["OutputPrinterColorSimplex"] as String;
             }
             set
             {
-                this["OutputPrinterCOLND"] = value;
+                this["OutputPrinterColorSimplex"] = value;
+            }
+        }
+
+        [UserScopedSetting()]
+        public string OutputPrinterColorDuplex
+        {
+            get
+            {
+                return this["OutputPrinterColorDuplex"] as String;
+            }
+            set
+            {
+                this["OutputPrinterColorDuplex"] = value;
             }
         }
 

@@ -19,6 +19,7 @@
 using System;
 using System.Threading;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace Touch2PcPrinter
 {
@@ -28,6 +29,8 @@ namespace Touch2PcPrinter
 
         private CancellationTokenSource cancelTokenSource = null;
         private Server currentServer;
+        private ComboBox[] printerSelectionCombos;
+
 
         public MainForm()
         {
@@ -36,45 +39,40 @@ namespace Touch2PcPrinter
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            this.printerSelectionCombos = new ComboBox[] { this.cmbOutputPrinterColorSimplex, this.cmbOutputPrinterBlackWhiteSimplex, this.cmbOutputPrinterBlackWhiteDuplex, this.cmbOutputPrinterColorDuplex };
+
+            var printerNames = PrinterUtilities.RetrievePrinterNames();
+
+            for (int i = 0; i < printerNames.Length; i++)
+            {
+                Array.ForEach(this.printerSelectionCombos, (comboBox) => comboBox.Items.Add(printerNames[i]));
+                if (String.Equals(this.config.OutputPrinterBlackWhiteDuplex, printerNames[i].Name, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    this.cmbOutputPrinterBlackWhiteDuplex.SelectedIndex = i;
+                }
+                if (String.Equals(this.config.OutputPrinterBlackWhiteSimplex, printerNames[i].Name, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    this.cmbOutputPrinterBlackWhiteSimplex.SelectedIndex = i;
+                }
+                if (String.Equals(this.config.OutputPrinterColorDuplex, printerNames[i].Name, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    this.cmbOutputPrinterColorDuplex.SelectedIndex = i;
+                }
+                if (String.Equals(this.config.OutputPrinterColorSimplex, printerNames[i].Name, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    this.cmbOutputPrinterColorSimplex.SelectedIndex = i;
+                }
+            }
+
             this.txtOutputFolder.Text = this.config.OutputFolder;
             this.txtPdfProgram.Text = this.config.PdfProgramPath;
             this.txtPdfProgramArgs.Text = this.config.PdfProgramArgs;
             this.txtJobTimeout.Text = this.config.JobTimeoutSeconds.ToString();
             this.chkStartServer.Checked = this.config.StartServerOnOpen;
+            this.chkVirtualOnly.Checked = this.config.VirtualOnly;
 
-            var printerNames = PrinterUtilities.RetrievePrinterNames();
-            for (int i = 0; i < printerNames.Length; i++)
-            {
-                this.cmbOutputPrinterBWND.Items.Add( printerNames[i].Name);                
-                this.cmbOutputPrinterBWD.Items.Add(printerNames[i].Name);
-                
-                /*if (string.Compare(config.OutputPrinterBWD, printerNames[i].Name, true) == 0)
-                    cmbOutputPrinterBWD.SelectedIndex = i;*/
+            this.toggleComboBoxesEnabled(!this.chkVirtualOnly.Checked); // if the "Print to PDF Only" check box is checked, then disable the output printer combo boxes
 
-                this.cmbOutputPrinterCOLND.Items.Add(printerNames[i].Name);
-                this.cmbOutputPrinterCOLD.Items.Add(printerNames[i].Name);
-            }
-            cmbOutputPrinterBWD.SelectedItem = config.OutputPrinterBWD;
-            cmbOutputPrinterBWND.SelectedItem = config.OutputPrinterBWND;
-            cmbOutputPrinterCOLD.SelectedItem = config.OutputPrinterCOLD;
-            cmbOutputPrinterCOLND.SelectedItem = config.OutputPrinterCOLND;
-                        
-            if (this.cmbOutputPrinterBWD.SelectedIndex < 0)
-            {
-                this.cmbOutputPrinterBWD.SelectedIndex = 0;
-            }
-            if (this.cmbOutputPrinterBWND.SelectedIndex < 0)
-            {
-                this.cmbOutputPrinterBWND.SelectedIndex = 0;
-            }
-            if (this.cmbOutputPrinterCOLD.SelectedIndex < 0)
-            {
-                this.cmbOutputPrinterCOLD.SelectedIndex = 0;
-            }
-            if (this.cmbOutputPrinterCOLND.SelectedIndex < 0)
-            {
-                this.cmbOutputPrinterCOLND.SelectedIndex = 0;
-            }
             if (this.config.StartServerOnOpen)
             {
                 this.enableStopDisableStartButtons();
@@ -101,7 +99,7 @@ namespace Touch2PcPrinter
             {
                 return;
             }
-            
+
             this.txtOutputFolder.Text = this.dlgOutputFolder.SelectedPath;
         }
 
@@ -115,11 +113,6 @@ namespace Touch2PcPrinter
 
             this.txtPdfProgram.Text = this.dlgPdfProgram.FileName;
             this.config.PdfProgramPath = this.dlgPdfProgram.FileName;
-        }
-
-        private void cmbOutputPrinter_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            this.config.OutputPrinterBWND = this.cmbOutputPrinterBWND.SelectedText;
         }
 
         private void writeSettingsToConfig()
@@ -138,15 +131,28 @@ namespace Touch2PcPrinter
 
             this.config.OutputFolder = this.txtOutputFolder.Text;
 
-            this.config.OutputPrinterBWD = cmbOutputPrinterBWD.SelectedItem.ToString();
-            this.config.OutputPrinterBWND = cmbOutputPrinterBWND.SelectedItem.ToString();
-            this.config.OutputPrinterCOLD = cmbOutputPrinterCOLD.SelectedItem.ToString();
-            this.config.OutputPrinterCOLND = cmbOutputPrinterCOLND.SelectedItem.ToString();
+            if (this.cmbOutputPrinterBlackWhiteDuplex.SelectedItem != null)
+            {
+                this.config.OutputPrinterBlackWhiteDuplex = ((Printer)this.cmbOutputPrinterBlackWhiteDuplex.SelectedItem).Name;
+            }
+            if (this.cmbOutputPrinterBlackWhiteSimplex.SelectedItem != null)
+            {
+                this.config.OutputPrinterBlackWhiteSimplex = ((Printer)this.cmbOutputPrinterBlackWhiteSimplex.SelectedItem).Name;
+            }
+            if (this.cmbOutputPrinterColorDuplex.SelectedItem != null)
+            {
+                this.config.OutputPrinterColorDuplex = ((Printer)this.cmbOutputPrinterColorDuplex.SelectedItem).Name;
+            }
+            if (this.cmbOutputPrinterColorSimplex.SelectedItem != null)
+            {
+                this.config.OutputPrinterColorSimplex = ((Printer)this.cmbOutputPrinterColorSimplex.SelectedItem).Name;
+            }
 
             this.config.PdfProgramPath = this.txtPdfProgram.Text;
             this.config.PdfProgramArgs = this.txtPdfProgramArgs.Text;
             this.config.JobTimeoutSeconds = timeoutSeconds;
             this.config.StartServerOnOpen = this.chkStartServer.Checked;
+            this.config.VirtualOnly = this.chkVirtualOnly.Checked;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -216,6 +222,11 @@ namespace Touch2PcPrinter
             this.btnStop.Enabled = true;
         }
 
+        private void toggleComboBoxesEnabled(bool enabled)
+        {
+            Array.ForEach(this.printerSelectionCombos, (comboBox) => comboBox.Enabled = enabled);
+        }
+
         private void stopServer()
         {
             try
@@ -248,6 +259,11 @@ namespace Touch2PcPrinter
             this.Show();
             this.WindowState = FormWindowState.Normal;
             this.sysTrayBalloon.Visible = false;
+        }
+
+        private void chkVirtualOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            this.toggleComboBoxesEnabled(!this.chkVirtualOnly.Checked);
         }
     }
 }

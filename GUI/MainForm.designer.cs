@@ -35,11 +35,19 @@
             this.sysTrayBalloon = new System.Windows.Forms.NotifyIcon(this.components);
             this.tcMain = new System.Windows.Forms.TabControl();
             this.tabPageGeneral = new System.Windows.Forms.TabPage();
-            this.tabPageOptions = new System.Windows.Forms.TabPage();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.txtLog = new System.Windows.Forms.TextBox();
+            this.chkStartServer = new System.Windows.Forms.CheckBox();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.txtLog = new System.Windows.Forms.TextBox();
+            this.tabPageOptions = new System.Windows.Forms.TabPage();
+            this.chkVirtualOnly = new System.Windows.Forms.CheckBox();
+            this.cmbOutputPrinterColorDuplex = new System.Windows.Forms.ComboBox();
+            this.cmbOutputPrinterColorSimplex = new System.Windows.Forms.ComboBox();
+            this.cmbOutputPrinterBlackWhiteDuplex = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.txtJobTimeout = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
@@ -51,19 +59,12 @@
             this.btnOutputFolderBrowse = new System.Windows.Forms.Button();
             this.txtOutputFolder = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.cmbOutputPrinterBWND = new System.Windows.Forms.ComboBox();
+            this.cmbOutputPrinterBlackWhiteSimplex = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.chkStartServer = new System.Windows.Forms.CheckBox();
-            this.cmbOutputPrinterBWD = new System.Windows.Forms.ComboBox();
-            this.cmbOutputPrinterCOLND = new System.Windows.Forms.ComboBox();
-            this.cmbOutputPrinterCOLD = new System.Windows.Forms.ComboBox();
             this.tcMain.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
-            this.tabPageOptions.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.tabPageOptions.SuspendLayout();
             this.SuspendLayout();
             // 
             // dlgPdfProgram
@@ -102,61 +103,16 @@
             this.tabPageGeneral.Text = "General";
             this.tabPageGeneral.UseVisualStyleBackColor = true;
             // 
-            // tabPageOptions
+            // chkStartServer
             // 
-            this.tabPageOptions.Controls.Add(this.cmbOutputPrinterCOLD);
-            this.tabPageOptions.Controls.Add(this.cmbOutputPrinterCOLND);
-            this.tabPageOptions.Controls.Add(this.cmbOutputPrinterBWD);
-            this.tabPageOptions.Controls.Add(this.label7);
-            this.tabPageOptions.Controls.Add(this.label8);
-            this.tabPageOptions.Controls.Add(this.label6);
-            this.tabPageOptions.Controls.Add(this.txtJobTimeout);
-            this.tabPageOptions.Controls.Add(this.label5);
-            this.tabPageOptions.Controls.Add(this.btnSave);
-            this.tabPageOptions.Controls.Add(this.txtPdfProgramArgs);
-            this.tabPageOptions.Controls.Add(this.label4);
-            this.tabPageOptions.Controls.Add(this.btnPdfProgBrowse);
-            this.tabPageOptions.Controls.Add(this.txtPdfProgram);
-            this.tabPageOptions.Controls.Add(this.label3);
-            this.tabPageOptions.Controls.Add(this.btnOutputFolderBrowse);
-            this.tabPageOptions.Controls.Add(this.txtOutputFolder);
-            this.tabPageOptions.Controls.Add(this.label2);
-            this.tabPageOptions.Controls.Add(this.cmbOutputPrinterBWND);
-            this.tabPageOptions.Controls.Add(this.label1);
-            this.tabPageOptions.Location = new System.Drawing.Point(4, 22);
-            this.tabPageOptions.Name = "tabPageOptions";
-            this.tabPageOptions.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageOptions.Size = new System.Drawing.Size(738, 356);
-            this.tabPageOptions.TabIndex = 1;
-            this.tabPageOptions.Text = "Options";
-            this.tabPageOptions.UseVisualStyleBackColor = true;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.txtLog);
-            this.groupBox2.Location = new System.Drawing.Point(8, 46);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(722, 307);
-            this.groupBox2.TabIndex = 3;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Processing Log";
-            // 
-            // txtLog
-            // 
-            this.txtLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtLog.Location = new System.Drawing.Point(13, 30);
-            this.txtLog.Multiline = true;
-            this.txtLog.Name = "txtLog";
-            this.txtLog.ReadOnly = true;
-            this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLog.Size = new System.Drawing.Size(703, 271);
-            this.txtLog.TabIndex = 1;
-            this.txtLog.Text = "-------- Processing Log --------\r\n";
+            this.chkStartServer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkStartServer.AutoSize = true;
+            this.chkStartServer.Location = new System.Drawing.Point(546, 16);
+            this.chkStartServer.Name = "chkStartServer";
+            this.chkStartServer.Size = new System.Drawing.Size(184, 17);
+            this.chkStartServer.TabIndex = 28;
+            this.chkStartServer.Text = "Start server upon application start";
+            this.chkStartServer.UseVisualStyleBackColor = true;
             // 
             // btnStop
             // 
@@ -179,9 +135,131 @@
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.txtLog);
+            this.groupBox2.Location = new System.Drawing.Point(8, 46);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(722, 307);
+            this.groupBox2.TabIndex = 3;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Processing Log";
+            // 
+            // txtLog
+            // 
+            this.txtLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtLog.Location = new System.Drawing.Point(13, 30);
+            this.txtLog.Multiline = true;
+            this.txtLog.Name = "txtLog";
+            this.txtLog.ReadOnly = true;
+            this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtLog.Size = new System.Drawing.Size(703, 271);
+            this.txtLog.TabIndex = 1;
+            this.txtLog.Text = "-------- Processing Log --------\r\n";
+            // 
+            // tabPageOptions
+            // 
+            this.tabPageOptions.Controls.Add(this.chkVirtualOnly);
+            this.tabPageOptions.Controls.Add(this.cmbOutputPrinterColorDuplex);
+            this.tabPageOptions.Controls.Add(this.cmbOutputPrinterColorSimplex);
+            this.tabPageOptions.Controls.Add(this.cmbOutputPrinterBlackWhiteDuplex);
+            this.tabPageOptions.Controls.Add(this.label7);
+            this.tabPageOptions.Controls.Add(this.label8);
+            this.tabPageOptions.Controls.Add(this.label6);
+            this.tabPageOptions.Controls.Add(this.txtJobTimeout);
+            this.tabPageOptions.Controls.Add(this.label5);
+            this.tabPageOptions.Controls.Add(this.btnSave);
+            this.tabPageOptions.Controls.Add(this.txtPdfProgramArgs);
+            this.tabPageOptions.Controls.Add(this.label4);
+            this.tabPageOptions.Controls.Add(this.btnPdfProgBrowse);
+            this.tabPageOptions.Controls.Add(this.txtPdfProgram);
+            this.tabPageOptions.Controls.Add(this.label3);
+            this.tabPageOptions.Controls.Add(this.btnOutputFolderBrowse);
+            this.tabPageOptions.Controls.Add(this.txtOutputFolder);
+            this.tabPageOptions.Controls.Add(this.label2);
+            this.tabPageOptions.Controls.Add(this.cmbOutputPrinterBlackWhiteSimplex);
+            this.tabPageOptions.Controls.Add(this.label1);
+            this.tabPageOptions.Location = new System.Drawing.Point(4, 22);
+            this.tabPageOptions.Name = "tabPageOptions";
+            this.tabPageOptions.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageOptions.Size = new System.Drawing.Size(738, 356);
+            this.tabPageOptions.TabIndex = 1;
+            this.tabPageOptions.Text = "Options";
+            this.tabPageOptions.UseVisualStyleBackColor = true;
+            // 
+            // chkVirtualOnly
+            // 
+            this.chkVirtualOnly.AutoSize = true;
+            this.chkVirtualOnly.Location = new System.Drawing.Point(11, 112);
+            this.chkVirtualOnly.Name = "chkVirtualOnly";
+            this.chkVirtualOnly.Size = new System.Drawing.Size(107, 17);
+            this.chkVirtualOnly.TabIndex = 34;
+            this.chkVirtualOnly.Text = "Print to PDF Only";
+            this.chkVirtualOnly.UseVisualStyleBackColor = true;
+            this.chkVirtualOnly.CheckedChanged += new System.EventHandler(this.chkVirtualOnly_CheckedChanged);
+            // 
+            // cmbOutputPrinterColorDuplex
+            // 
+            this.cmbOutputPrinterColorDuplex.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbOutputPrinterColorDuplex.FormattingEnabled = true;
+            this.cmbOutputPrinterColorDuplex.Location = new System.Drawing.Point(182, 86);
+            this.cmbOutputPrinterColorDuplex.Name = "cmbOutputPrinterColorDuplex";
+            this.cmbOutputPrinterColorDuplex.Size = new System.Drawing.Size(319, 21);
+            this.cmbOutputPrinterColorDuplex.TabIndex = 33;
+            // 
+            // cmbOutputPrinterColorSimplex
+            // 
+            this.cmbOutputPrinterColorSimplex.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbOutputPrinterColorSimplex.FormattingEnabled = true;
+            this.cmbOutputPrinterColorSimplex.Location = new System.Drawing.Point(182, 61);
+            this.cmbOutputPrinterColorSimplex.Name = "cmbOutputPrinterColorSimplex";
+            this.cmbOutputPrinterColorSimplex.Size = new System.Drawing.Size(319, 21);
+            this.cmbOutputPrinterColorSimplex.TabIndex = 32;
+            // 
+            // cmbOutputPrinterBlackWhiteDuplex
+            // 
+            this.cmbOutputPrinterBlackWhiteDuplex.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbOutputPrinterBlackWhiteDuplex.FormattingEnabled = true;
+            this.cmbOutputPrinterBlackWhiteDuplex.Location = new System.Drawing.Point(182, 35);
+            this.cmbOutputPrinterBlackWhiteDuplex.Name = "cmbOutputPrinterBlackWhiteDuplex";
+            this.cmbOutputPrinterBlackWhiteDuplex.Size = new System.Drawing.Size(319, 21);
+            this.cmbOutputPrinterBlackWhiteDuplex.TabIndex = 31;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(8, 89);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(108, 13);
+            this.label7.TabIndex = 30;
+            this.label7.Text = "Printer (Duplex/Color)";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(8, 64);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(111, 13);
+            this.label8.TabIndex = 29;
+            this.label8.Text = "Printer (Simplex/Color)";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(8, 38);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(151, 13);
+            this.label6.TabIndex = 28;
+            this.label6.Text = "Printer (Duplex/Black && White)";
+            // 
             // txtJobTimeout
             // 
-            this.txtJobTimeout.Location = new System.Drawing.Point(183, 197);
+            this.txtJobTimeout.Location = new System.Drawing.Point(183, 225);
             this.txtJobTimeout.Name = "txtJobTimeout";
             this.txtJobTimeout.Size = new System.Drawing.Size(49, 20);
             this.txtJobTimeout.TabIndex = 26;
@@ -189,7 +267,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(8, 197);
+            this.label5.Location = new System.Drawing.Point(8, 225);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(94, 26);
             this.label5.TabIndex = 25;
@@ -208,7 +286,7 @@
             // 
             // txtPdfProgramArgs
             // 
-            this.txtPdfProgramArgs.Location = new System.Drawing.Point(183, 165);
+            this.txtPdfProgramArgs.Location = new System.Drawing.Point(183, 193);
             this.txtPdfProgramArgs.Name = "txtPdfProgramArgs";
             this.txtPdfProgramArgs.Size = new System.Drawing.Size(319, 20);
             this.txtPdfProgramArgs.TabIndex = 23;
@@ -216,7 +294,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(8, 168);
+            this.label4.Location = new System.Drawing.Point(8, 196);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(94, 13);
             this.label4.TabIndex = 22;
@@ -224,7 +302,7 @@
             // 
             // btnPdfProgBrowse
             // 
-            this.btnPdfProgBrowse.Location = new System.Drawing.Point(519, 139);
+            this.btnPdfProgBrowse.Location = new System.Drawing.Point(519, 167);
             this.btnPdfProgBrowse.Name = "btnPdfProgBrowse";
             this.btnPdfProgBrowse.Size = new System.Drawing.Size(87, 20);
             this.btnPdfProgBrowse.TabIndex = 21;
@@ -234,7 +312,7 @@
             // 
             // txtPdfProgram
             // 
-            this.txtPdfProgram.Location = new System.Drawing.Point(183, 139);
+            this.txtPdfProgram.Location = new System.Drawing.Point(183, 167);
             this.txtPdfProgram.Name = "txtPdfProgram";
             this.txtPdfProgram.Size = new System.Drawing.Size(318, 20);
             this.txtPdfProgram.TabIndex = 20;
@@ -242,7 +320,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(7, 142);
+            this.label3.Location = new System.Drawing.Point(7, 170);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(95, 13);
             this.label3.TabIndex = 19;
@@ -250,7 +328,7 @@
             // 
             // btnOutputFolderBrowse
             // 
-            this.btnOutputFolderBrowse.Location = new System.Drawing.Point(519, 114);
+            this.btnOutputFolderBrowse.Location = new System.Drawing.Point(519, 142);
             this.btnOutputFolderBrowse.Name = "btnOutputFolderBrowse";
             this.btnOutputFolderBrowse.Size = new System.Drawing.Size(87, 20);
             this.btnOutputFolderBrowse.TabIndex = 18;
@@ -260,7 +338,7 @@
             // 
             // txtOutputFolder
             // 
-            this.txtOutputFolder.Location = new System.Drawing.Point(183, 114);
+            this.txtOutputFolder.Location = new System.Drawing.Point(183, 142);
             this.txtOutputFolder.Name = "txtOutputFolder";
             this.txtOutputFolder.Size = new System.Drawing.Size(319, 20);
             this.txtOutputFolder.TabIndex = 17;
@@ -268,94 +346,29 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 114);
+            this.label2.Location = new System.Drawing.Point(8, 142);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(71, 13);
             this.label2.TabIndex = 16;
             this.label2.Text = "Output Folder";
             // 
-            // cmbOutputPrinterBWND
+            // cmbOutputPrinterBlackWhiteSimplex
             // 
-            this.cmbOutputPrinterBWND.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbOutputPrinterBWND.FormattingEnabled = true;
-            this.cmbOutputPrinterBWND.Location = new System.Drawing.Point(182, 8);
-            this.cmbOutputPrinterBWND.Name = "cmbOutputPrinterBWND";
-            this.cmbOutputPrinterBWND.Size = new System.Drawing.Size(319, 21);
-            this.cmbOutputPrinterBWND.TabIndex = 15;
+            this.cmbOutputPrinterBlackWhiteSimplex.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbOutputPrinterBlackWhiteSimplex.FormattingEnabled = true;
+            this.cmbOutputPrinterBlackWhiteSimplex.Location = new System.Drawing.Point(182, 8);
+            this.cmbOutputPrinterBlackWhiteSimplex.Name = "cmbOutputPrinterBlackWhiteSimplex";
+            this.cmbOutputPrinterBlackWhiteSimplex.Size = new System.Drawing.Size(319, 21);
+            this.cmbOutputPrinterBlackWhiteSimplex.TabIndex = 15;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(8, 12);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(168, 13);
+            this.label1.Size = new System.Drawing.Size(154, 13);
             this.label1.TabIndex = 14;
-            this.label1.Text = "Printer (Non-Duplex/Black&&White)";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(8, 38);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(145, 13);
-            this.label6.TabIndex = 28;
-            this.label6.Text = "Printer (Duplex/Black&&White)";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(8, 89);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(108, 13);
-            this.label7.TabIndex = 30;
-            this.label7.Text = "Printer (Duplex/Color)";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(8, 64);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(131, 13);
-            this.label8.TabIndex = 29;
-            this.label8.Text = "Printer (Non-Duplex/Color)";
-            // 
-            // chkStartServer
-            // 
-            this.chkStartServer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.chkStartServer.AutoSize = true;
-            this.chkStartServer.Location = new System.Drawing.Point(546, 16);
-            this.chkStartServer.Name = "chkStartServer";
-            this.chkStartServer.Size = new System.Drawing.Size(184, 17);
-            this.chkStartServer.TabIndex = 28;
-            this.chkStartServer.Text = "Start server upon application start";
-            this.chkStartServer.UseVisualStyleBackColor = true;
-            // 
-            // cmbOutputPrinterBWD
-            // 
-            this.cmbOutputPrinterBWD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbOutputPrinterBWD.FormattingEnabled = true;
-            this.cmbOutputPrinterBWD.Location = new System.Drawing.Point(182, 35);
-            this.cmbOutputPrinterBWD.Name = "cmbOutputPrinterBWD";
-            this.cmbOutputPrinterBWD.Size = new System.Drawing.Size(319, 21);
-            this.cmbOutputPrinterBWD.TabIndex = 31;
-            // 
-            // cmbOutputPrinterCOLND
-            // 
-            this.cmbOutputPrinterCOLND.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbOutputPrinterCOLND.FormattingEnabled = true;
-            this.cmbOutputPrinterCOLND.Location = new System.Drawing.Point(182, 61);
-            this.cmbOutputPrinterCOLND.Name = "cmbOutputPrinterCOLND";
-            this.cmbOutputPrinterCOLND.Size = new System.Drawing.Size(319, 21);
-            this.cmbOutputPrinterCOLND.TabIndex = 32;
-            // 
-            // cmbOutputPrinterCOLD
-            // 
-            this.cmbOutputPrinterCOLD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbOutputPrinterCOLD.FormattingEnabled = true;
-            this.cmbOutputPrinterCOLD.Location = new System.Drawing.Point(182, 86);
-            this.cmbOutputPrinterCOLD.Name = "cmbOutputPrinterCOLD";
-            this.cmbOutputPrinterCOLD.Size = new System.Drawing.Size(319, 21);
-            this.cmbOutputPrinterCOLD.TabIndex = 33;
+            this.label1.Text = "Printer (Simplex/Black && White)";
             // 
             // MainForm
             // 
@@ -374,10 +387,10 @@
             this.tcMain.ResumeLayout(false);
             this.tabPageGeneral.ResumeLayout(false);
             this.tabPageGeneral.PerformLayout();
-            this.tabPageOptions.ResumeLayout(false);
-            this.tabPageOptions.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.tabPageOptions.ResumeLayout(false);
+            this.tabPageOptions.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -409,11 +422,12 @@
         private System.Windows.Forms.Button btnOutputFolderBrowse;
         private System.Windows.Forms.TextBox txtOutputFolder;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox cmbOutputPrinterBWND;
+        private System.Windows.Forms.ComboBox cmbOutputPrinterBlackWhiteSimplex;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox cmbOutputPrinterCOLD;
-        private System.Windows.Forms.ComboBox cmbOutputPrinterCOLND;
-        private System.Windows.Forms.ComboBox cmbOutputPrinterBWD;
+        private System.Windows.Forms.ComboBox cmbOutputPrinterColorDuplex;
+        private System.Windows.Forms.ComboBox cmbOutputPrinterColorSimplex;
+        private System.Windows.Forms.ComboBox cmbOutputPrinterBlackWhiteDuplex;
+        private System.Windows.Forms.CheckBox chkVirtualOnly;
     }
 }
 

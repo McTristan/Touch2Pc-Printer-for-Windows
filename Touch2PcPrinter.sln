@@ -1,10 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Touch2PcPrinter", "Touch2PcPrinter.csproj", "{241876A6-E484-445D-BF64-CBB2A4E175AE}"
-	ProjectSection(ProjectDependencies) = postProject
-		{237ED354-C209-41FC-AB28-037B68DC7A24} = {237ED354-C209-41FC-AB28-037B68DC7A24}
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Touch2PcPrinter", "Touch2PcPrinter.csproj", "{0E0FF0DD-78CC-43A5-B397-FA49AFFA4318}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrintQueueMonitor", "PrintQueueMonitor\PrintQueueMonitor.csproj", "{237ED354-C209-41FC-AB28-037B68DC7A24}"
 EndProject
@@ -18,26 +15,26 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{241876A6-E484-445D-BF64-CBB2A4E175AE}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{241876A6-E484-445D-BF64-CBB2A4E175AE}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{241876A6-E484-445D-BF64-CBB2A4E175AE}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{241876A6-E484-445D-BF64-CBB2A4E175AE}.Debug|x86.ActiveCfg = Debug|x86
-		{241876A6-E484-445D-BF64-CBB2A4E175AE}.Debug|x86.Build.0 = Debug|x86
-		{241876A6-E484-445D-BF64-CBB2A4E175AE}.Release|Any CPU.ActiveCfg = Release|x86
-		{241876A6-E484-445D-BF64-CBB2A4E175AE}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{241876A6-E484-445D-BF64-CBB2A4E175AE}.Release|Mixed Platforms.Build.0 = Release|x86
-		{241876A6-E484-445D-BF64-CBB2A4E175AE}.Release|x86.ActiveCfg = Release|x86
-		{241876A6-E484-445D-BF64-CBB2A4E175AE}.Release|x86.Build.0 = Release|x86
-		{237ED354-C209-41FC-AB28-037B68DC7A24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{237ED354-C209-41FC-AB28-037B68DC7A24}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{237ED354-C209-41FC-AB28-037B68DC7A24}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{237ED354-C209-41FC-AB28-037B68DC7A24}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{237ED354-C209-41FC-AB28-037B68DC7A24}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{237ED354-C209-41FC-AB28-037B68DC7A24}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{237ED354-C209-41FC-AB28-037B68DC7A24}.Release|Any CPU.Build.0 = Release|Any CPU
-		{237ED354-C209-41FC-AB28-037B68DC7A24}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{237ED354-C209-41FC-AB28-037B68DC7A24}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{237ED354-C209-41FC-AB28-037B68DC7A24}.Release|x86.ActiveCfg = Release|Any CPU
+		{0E0FF0DD-78CC-43A5-B397-FA49AFFA4318}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{0E0FF0DD-78CC-43A5-B397-FA49AFFA4318}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{0E0FF0DD-78CC-43A5-B397-FA49AFFA4318}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{0E0FF0DD-78CC-43A5-B397-FA49AFFA4318}.Debug|x86.ActiveCfg = Debug|x86
+		{0E0FF0DD-78CC-43A5-B397-FA49AFFA4318}.Debug|x86.Build.0 = Debug|x86
+		{0E0FF0DD-78CC-43A5-B397-FA49AFFA4318}.Release|Any CPU.ActiveCfg = Release|x86
+		{0E0FF0DD-78CC-43A5-B397-FA49AFFA4318}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{0E0FF0DD-78CC-43A5-B397-FA49AFFA4318}.Release|Mixed Platforms.Build.0 = Release|x86
+		{0E0FF0DD-78CC-43A5-B397-FA49AFFA4318}.Release|x86.ActiveCfg = Release|x86
+		{0E0FF0DD-78CC-43A5-B397-FA49AFFA4318}.Release|x86.Build.0 = Release|x86
+		{237ED354-C209-41FC-AB28-037B68DC7A24}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{237ED354-C209-41FC-AB28-037B68DC7A24}.Debug|Mixed Platforms.ActiveCfg = Release|x86
+		{237ED354-C209-41FC-AB28-037B68DC7A24}.Debug|Mixed Platforms.Build.0 = Release|x86
+		{237ED354-C209-41FC-AB28-037B68DC7A24}.Debug|x86.ActiveCfg = Debug|x86
+		{237ED354-C209-41FC-AB28-037B68DC7A24}.Debug|x86.Build.0 = Debug|x86
+		{237ED354-C209-41FC-AB28-037B68DC7A24}.Release|Any CPU.ActiveCfg = Release|x86
+		{237ED354-C209-41FC-AB28-037B68DC7A24}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{237ED354-C209-41FC-AB28-037B68DC7A24}.Release|Mixed Platforms.Build.0 = Release|x86
+		{237ED354-C209-41FC-AB28-037B68DC7A24}.Release|x86.ActiveCfg = Release|x86
+		{237ED354-C209-41FC-AB28-037B68DC7A24}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
