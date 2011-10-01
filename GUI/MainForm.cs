@@ -1,4 +1,4 @@
-﻿/* Copyright 2011 Corey Bonnell
+﻿/* Copyright 2011 Corey Bonnell and Sandro Lange
 
    This file is part of Touch2PcPrinter for Windows.
 
@@ -174,19 +174,22 @@ namespace Touch2PcPrinter
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (this.currentServer != null)
+            if (e.CloseReason == CloseReason.UserClosing) // don't make Windows hang on shutdown
             {
-                if (MessageBox.Show(this, "The print server is still running. Are you sure want to quit?", "Server still running", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == System.Windows.Forms.DialogResult.No)
+                if (this.currentServer != null)
                 {
-                    e.Cancel = true;
-                    return;
+                    if (MessageBox.Show(this, "The print server is still running. Are you sure want to quit?", "Server still running", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == System.Windows.Forms.DialogResult.No)
+                    {
+                        e.Cancel = true;
+                        return;
+                    }
+                    this.stopServer();
                 }
-                this.stopServer();
+
+                this.writeSettingsToConfig();
+
+                this.config.Save();
             }
-
-            this.writeSettingsToConfig();
-
-            this.config.Save();
         }
 
         private void startServer()

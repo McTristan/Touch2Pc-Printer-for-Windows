@@ -1,4 +1,4 @@
-﻿/* Copyright 2011 Corey Bonnell
+﻿/* Copyright 2011 Corey Bonnell and Sandro Lange
 
    This file is part of Touch2PcPrinter for Windows.
 
