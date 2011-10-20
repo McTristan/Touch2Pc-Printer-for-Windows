@@ -1,0 +1,13 @@
+mark
+  /QueryUser 0
+  /OutputFile	(%printer%!DESTINATION_PRINTER_NAME!)
+  /NoCancel      true                       % don't show the cancel dialog
+  /BitsPerPixel  24                          % force 24 bits/pixel
+  /UserSettings
+    <<
+      /DocumentName  (Touch2Pc Printer document) % name for the Windows spooler
+      /MaxResolution 600                   % maximum document resolution
+    >>
+  (mswinpr2) finddevice                     % select the Windows device driver
+  putdeviceprops
+setdevice

@@ -25,9 +25,6 @@ namespace Touch2PcPrinter
     internal class Configuration : ApplicationSettingsBase
     {
         private static readonly string DEFAULT_OUTPUT_DIR = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Touch2PcPrinter Output");
-        private const string DEFAULT_PDF_PATH = "[PDF PROGRAM PATH REQUIRED]";
-        private const string DEFAULT_PDF_ARGS = "/t \"{0}\" \"{1}\"";
-        private const int DEFAULT_JOB_TIMEOUT = 120;
         private const string DEFAULT_START_SERVER = "false";
         private const string DEFAULT_VIRTUAL_PDF = "false";
 
@@ -121,52 +118,6 @@ namespace Touch2PcPrinter
             set
             {
                 this["OutputFolder"] = value;
-            }
-        }
-
-        [UserScopedSetting()]
-        [DefaultSettingValue(Configuration.DEFAULT_PDF_PATH)]
-        public string PdfProgramPath
-        {
-            get
-            {
-                return this["PdfProgramPath"] as String;
-            }
-            set
-            {
-                this["PdfProgramPath"] = value;
-            }
-        }
-
-        [UserScopedSetting()]
-        [DefaultSettingValue(Configuration.DEFAULT_PDF_ARGS)]
-        public string PdfProgramArgs
-        {
-            get
-            {
-                return this["PdfProgramArgs"] as String;
-            }
-            set
-            {
-                this["PdfProgramArgs"] = value;
-            }
-        }
-
-        [UserScopedSetting()]
-        public int JobTimeoutSeconds
-        {
-            get
-            {
-                var value = this["JobTimeoutSeconds"];
-                return value != null ? Convert.ToInt32(value) : Configuration.DEFAULT_JOB_TIMEOUT;
-            }
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentOutOfRangeException("value");
-                }
-                this["JobTimeoutSeconds"] = value;
             }
         }
 

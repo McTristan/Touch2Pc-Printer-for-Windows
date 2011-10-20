@@ -48,14 +48,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.txtJobTimeout = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
-            this.txtPdfProgramArgs = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.btnPdfProgBrowse = new System.Windows.Forms.Button();
-            this.txtPdfProgram = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.btnOutputFolderBrowse = new System.Windows.Forms.Button();
             this.txtOutputFolder = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -171,14 +164,7 @@
             this.tabPageOptions.Controls.Add(this.label7);
             this.tabPageOptions.Controls.Add(this.label8);
             this.tabPageOptions.Controls.Add(this.label6);
-            this.tabPageOptions.Controls.Add(this.txtJobTimeout);
-            this.tabPageOptions.Controls.Add(this.label5);
             this.tabPageOptions.Controls.Add(this.btnSave);
-            this.tabPageOptions.Controls.Add(this.txtPdfProgramArgs);
-            this.tabPageOptions.Controls.Add(this.label4);
-            this.tabPageOptions.Controls.Add(this.btnPdfProgBrowse);
-            this.tabPageOptions.Controls.Add(this.txtPdfProgram);
-            this.tabPageOptions.Controls.Add(this.label3);
             this.tabPageOptions.Controls.Add(this.btnOutputFolderBrowse);
             this.tabPageOptions.Controls.Add(this.txtOutputFolder);
             this.tabPageOptions.Controls.Add(this.label2);
@@ -257,22 +243,6 @@
             this.label6.TabIndex = 28;
             this.label6.Text = "Printer (Duplex/Black && White)";
             // 
-            // txtJobTimeout
-            // 
-            this.txtJobTimeout.Location = new System.Drawing.Point(183, 225);
-            this.txtJobTimeout.Name = "txtJobTimeout";
-            this.txtJobTimeout.Size = new System.Drawing.Size(49, 20);
-            this.txtJobTimeout.TabIndex = 26;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(8, 225);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(94, 26);
-            this.label5.TabIndex = 25;
-            this.label5.Text = "Job Processing\r\nTimeout (seconds)";
-            // 
             // btnSave
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -283,48 +253,6 @@
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // txtPdfProgramArgs
-            // 
-            this.txtPdfProgramArgs.Location = new System.Drawing.Point(183, 193);
-            this.txtPdfProgramArgs.Name = "txtPdfProgramArgs";
-            this.txtPdfProgramArgs.Size = new System.Drawing.Size(319, 20);
-            this.txtPdfProgramArgs.TabIndex = 23;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(8, 196);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(94, 13);
-            this.label4.TabIndex = 22;
-            this.label4.Text = "PDF Program Args";
-            // 
-            // btnPdfProgBrowse
-            // 
-            this.btnPdfProgBrowse.Location = new System.Drawing.Point(519, 167);
-            this.btnPdfProgBrowse.Name = "btnPdfProgBrowse";
-            this.btnPdfProgBrowse.Size = new System.Drawing.Size(87, 20);
-            this.btnPdfProgBrowse.TabIndex = 21;
-            this.btnPdfProgBrowse.Text = "Browse...";
-            this.btnPdfProgBrowse.UseVisualStyleBackColor = true;
-            this.btnPdfProgBrowse.Click += new System.EventHandler(this.btnPdfProgBrowse_Click);
-            // 
-            // txtPdfProgram
-            // 
-            this.txtPdfProgram.Location = new System.Drawing.Point(183, 167);
-            this.txtPdfProgram.Name = "txtPdfProgram";
-            this.txtPdfProgram.Size = new System.Drawing.Size(318, 20);
-            this.txtPdfProgram.TabIndex = 20;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(7, 170);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(95, 13);
-            this.label3.TabIndex = 19;
-            this.label3.Text = "PDF Program Path";
             // 
             // btnOutputFolderBrowse
             // 
@@ -411,14 +339,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox txtJobTimeout;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.TextBox txtPdfProgramArgs;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button btnPdfProgBrowse;
-        private System.Windows.Forms.TextBox txtPdfProgram;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnOutputFolderBrowse;
         private System.Windows.Forms.TextBox txtOutputFolder;
         private System.Windows.Forms.Label label2;

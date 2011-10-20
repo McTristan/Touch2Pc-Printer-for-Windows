@@ -52,7 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PdfPrinter.cs" />
+    <Compile Include="PostScriptPrinter.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="IPrintServerComponent.cs" />
     <Compile Include="GUI\MainForm.cs">
@@ -61,7 +61,7 @@
     <Compile Include="GUI\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PdfConverter.cs" />
+    <Compile Include="JobConverter.cs" />
     <Compile Include="PrinterUtilities.cs" />
     <Compile Include="PrintJobProperties.cs" />
     <Compile Include="PrintJobReader.cs" />
@@ -81,6 +81,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="COPYING">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -94,6 +95,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="setup.ps" />
     <None Include="Touch2Pc Printer for Windows Help.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -108,13 +110,10 @@
     <None Include="legal.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="gsdll32.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="printer.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="PrintQueueMonitor\PrintQueueMonitor.csproj">
-      <Project>{237ED354-C209-41FC-AB28-037B68DC7A24}</Project>
-      <Name>PrintQueueMonitor</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -65,9 +65,6 @@ namespace Touch2PcPrinter
             }
 
             this.txtOutputFolder.Text = this.config.OutputFolder;
-            this.txtPdfProgram.Text = this.config.PdfProgramPath;
-            this.txtPdfProgramArgs.Text = this.config.PdfProgramArgs;
-            this.txtJobTimeout.Text = this.config.JobTimeoutSeconds.ToString();
             this.chkStartServer.Checked = this.config.StartServerOnOpen;
             this.chkVirtualOnly.Checked = this.config.VirtualOnly;
 
@@ -110,25 +107,10 @@ namespace Touch2PcPrinter
             {
                 return;
             }
-
-            this.txtPdfProgram.Text = this.dlgPdfProgram.FileName;
-            this.config.PdfProgramPath = this.dlgPdfProgram.FileName;
         }
 
         private void writeSettingsToConfig()
         {
-            int timeoutSeconds;
-            if (!Int32.TryParse(this.txtJobTimeout.Text, out timeoutSeconds))
-            {
-                MessageBox.Show("Enter a numeric value for the timeout.", "Invalid input for timeout", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            if (timeoutSeconds < 0)
-            {
-                MessageBox.Show("Enter a non-negative value for the timeout.", "Invalid input for timeout", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
             this.config.OutputFolder = this.txtOutputFolder.Text;
 
             if (this.cmbOutputPrinterBlackWhiteDuplex.SelectedItem != null)
@@ -148,9 +130,6 @@ namespace Touch2PcPrinter
                 this.config.OutputPrinterColorSimplex = ((Printer)this.cmbOutputPrinterColorSimplex.SelectedItem).Name;
             }
 
-            this.config.PdfProgramPath = this.txtPdfProgram.Text;
-            this.config.PdfProgramArgs = this.txtPdfProgramArgs.Text;
-            this.config.JobTimeoutSeconds = timeoutSeconds;
             this.config.StartServerOnOpen = this.chkStartServer.Checked;
             this.config.VirtualOnly = this.chkVirtualOnly.Checked;
         }

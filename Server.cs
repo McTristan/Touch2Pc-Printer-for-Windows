@@ -29,10 +29,12 @@ namespace Touch2PcPrinter
         private readonly CancellationToken cancelToken;
         private readonly Configuration config;
         private readonly Action<string> logger;
-        private readonly PdfConverter pdfConverter;
+        private readonly JobConverter jobConverter;
         private readonly PrintJobReader printJobReader;
         private readonly SnmpPrinterAgent snmpAgent;
-        private readonly PdfPrinter pdfPrinter;
+        private readonly PostScriptPrinter postScriptPrinter;
+        private readonly JobConversionKind conversionKind;
+
         private readonly Dictionary<PrintJobProperties, string> propertyMappings = new Dictionary<PrintJobProperties, string>();
 
         public Server(Action<string> logger, CancellationToken cancelToken, Configuration config)
@@ -50,12 +52,17 @@ namespace Touch2PcPrinter
             this.config = config;
 
             string programFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            this.pdfConverter = new PdfConverter(this.logger, programFolder, this.config.OutputFolder);
+            this.jobConverter = new JobConverter(this.logger, programFolder, this.config.OutputFolder);
             this.printJobReader = new PrintJobReader(this.logger, this.cancelToken);
             this.snmpAgent = new SnmpPrinterAgent(this.logger);
             if (!this.config.VirtualOnly)
             {
-                this.pdfPrinter = new PdfPrinter(this.logger, this.config.PdfProgramPath, this.config.PdfProgramArgs, this.config.JobTimeoutSeconds, this.cancelToken);
+                this.postScriptPrinter = new PostScriptPrinter(this.logger, programFolder, this.cancelToken);
+                this.conversionKind = JobConversionKind.PostScript;
+            }
+            else
+            {
+                this.conversionKind = JobConversionKind.Pdf;
             }
             this.createJobPropertyMappings();
         }
@@ -79,10 +86,6 @@ namespace Touch2PcPrinter
                 this.logger.Invoke(String.Format("Output simplex color printer: {0}", this.config.OutputPrinterColorSimplex));
                 this.logger.Invoke(String.Format("Output duplex color printer: {0}", this.config.OutputPrinterColorDuplex));
             }
-            
-            this.logger.Invoke(String.Format("PDF program path: {0}", this.config.PdfProgramPath));
-            this.logger.Invoke(String.Format("PDF program arguments: {0}", this.config.PdfProgramArgs));
-            this.logger.Invoke(String.Format("Job timeout: {0} second(s)", this.config.JobTimeoutSeconds));
         }
 
         public void Start()
@@ -94,11 +97,11 @@ namespace Touch2PcPrinter
 
             this.logConfiguration();
 
-            if (this.pdfPrinter != null)
+            if (this.postScriptPrinter != null)
             {
-                this.pdfPrinter.Start();
+                this.postScriptPrinter.Start();
             }
-            this.pdfConverter.Start();
+            this.jobConverter.Start();
             this.printJobReader.Start();
             this.logger.Invoke("Print job listener started successfully");
             this.snmpAgent.Start();
@@ -110,11 +113,11 @@ namespace Touch2PcPrinter
 
         public void Stop()
         {
-            if (this.pdfPrinter != null)
+            if (this.postScriptPrinter != null)
             {
-                this.pdfPrinter.Stop();
+                this.postScriptPrinter.Stop();
             }
-            this.pdfConverter.Stop();
+            this.jobConverter.Stop();
             this.printJobReader.Stop();
             this.logger.Invoke("Print job listener stopped successfully");
             this.snmpAgent.Stop();
@@ -123,11 +126,11 @@ namespace Touch2PcPrinter
 
         public void Dispose()
         {
-            if (this.pdfPrinter != null)
+            if (this.postScriptPrinter != null)
             {
-                this.pdfPrinter.Dispose();
+                this.postScriptPrinter.Dispose();
             }
-            this.pdfConverter.Dispose();
+            this.jobConverter.Dispose();
             this.printJobReader.Dispose();
             this.snmpAgent.Dispose();
         }
@@ -136,24 +139,24 @@ namespace Touch2PcPrinter
         {
             while (!this.cancelToken.IsCancellationRequested)
             {
-                string tempPdfPath;
+                string tempOutputFilePath;
                 string tempPclPath;
                 try
                 {
                     this.logger.Invoke("Waiting for incoming job...");
                     tempPclPath = this.printJobReader.ReadJobToFile();
                     var jobProperties = PrintJobReader.GetProperties(tempPclPath);
-                    this.logger.Invoke("Converting PCL file to PDF...");
+                    this.logger.Invoke(String.Format("Converting PCL file to {0}...", this.conversionKind));
                     try
                     {
-                        tempPdfPath = pdfConverter.ConvertToPdf(tempPclPath);
+                        tempOutputFilePath = jobConverter.Convert(tempPclPath, this.conversionKind);
                     }
                     finally
                     {
                         this.logger.Invoke("Deleting temporary PCL file...");
                         File.Delete(tempPclPath);
                     }
-                    if (this.pdfPrinter == null)
+                    if (this.postScriptPrinter == null)
                     {
                         continue;
                     }
@@ -166,7 +169,7 @@ namespace Touch2PcPrinter
                         throw new InvalidOperationException("Unsupported print job properties");
                     }
 
-                    this.logger.Invoke("Sending PDF file to be printed...");
+                    this.logger.Invoke("Sending PostScript file to be printed...");
                     try
                     {
                         if (outputPrinterName == null)
@@ -175,14 +178,14 @@ namespace Touch2PcPrinter
                         }
                         else
                         {
-                            this.pdfPrinter.Print(tempPdfPath, outputPrinterName);
+                            this.postScriptPrinter.Print(tempOutputFilePath, outputPrinterName);
                             this.logger.Invoke("Print job complete!");
                         }
                     }
                     finally
                     {
-                        this.logger.Invoke("Deleting temporary PDF file...");
-                        File.Delete(tempPdfPath);
+                        this.logger.Invoke("Deleting temporary PostScript file...");
+                        File.Delete(tempOutputFilePath);
                     }
                 }
                 catch (OperationCanceledException) { }

@@ -2,6 +2,10 @@
 Windows binaries provided by Edward Mendelson,
 http://www.columbia.edu/~em36/ghostpcl.html
 
+---- GPL GhostScript (gsdll32.dll) ----
+Windows binaries provided by Artifex Software, Inc.
+http://www.ghostscript.com/download/
+
 ---- PrintQueueMonitor ----
 http://www.codeproject.com/KB/printing/PrinterQueueMonitor.aspx?
 
