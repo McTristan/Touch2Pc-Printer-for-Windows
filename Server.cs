@@ -178,7 +178,7 @@ namespace Touch2PcPrinter
                         }
                         else
                         {
-                            this.postScriptPrinter.Print(tempOutputFilePath, outputPrinterName);
+                            this.postScriptPrinter.Print(tempOutputFilePath, outputPrinterName, jobProperties.PlexMode);
                             this.logger.Invoke("Print job complete!");
                         }
                     }

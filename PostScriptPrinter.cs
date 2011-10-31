@@ -30,6 +30,7 @@ namespace Touch2PcPrinter
         private static readonly string[] PROGRAM_ARGUMENTS = new string[] { "gswin32c.exe", "-q", "-dQUIET", "-dBATCH", "-dNOPAUSE", "{0}", "{0}" };
         private const int STATIC_ARGS_COUNT = 5;
         private const string OUTPUT_PRINTER_TOKEN = "!DESTINATION_PRINTER_NAME!";
+        private const string OUTPUT_PLEX_MODE_TOKEN = "!JOB_PLEX_MODE!";
 
 
         private readonly Action<string> logger;
@@ -57,7 +58,7 @@ namespace Touch2PcPrinter
 
         public void Dispose() { }
 
-        private string writeSetupFile(string outputPrinter)
+        private string writeSetupFile(string outputPrinter, PlexMode plexMode)
         {
             if (outputPrinter == null)
             {
@@ -65,6 +66,7 @@ namespace Touch2PcPrinter
             }
             string fileContent = Encoding.UTF8.GetString(Properties.Resources.setupPostScript);
             fileContent = fileContent.Replace(PostScriptPrinter.OUTPUT_PRINTER_TOKEN, outputPrinter);
+            fileContent = fileContent.Replace(PostScriptPrinter.OUTPUT_PLEX_MODE_TOKEN, plexMode == PlexMode.Duplex ? "true" : "false");
             string path = Path.GetTempFileName();
             File.WriteAllText(path, fileContent);
             this.logger.Invoke(String.Format("Wrote job setup file to \"{0}\"", path));
@@ -92,7 +94,7 @@ namespace Touch2PcPrinter
             return args;
         }
 
-        public void Print(string psFilePath, string outputPrinter)
+        public void Print(string psFilePath, string outputPrinter, PlexMode plexMode)
         {
 
             if (psFilePath == null)
@@ -106,7 +108,7 @@ namespace Touch2PcPrinter
             string setupFilePath = null;
             try // try/finally block for setup file
             {
-                setupFilePath = this.writeSetupFile(outputPrinter);
+                setupFilePath = this.writeSetupFile(outputPrinter, plexMode);
                 var args = this.createArgs(psFilePath, outputPrinter, setupFilePath);
                 var hInstance = IntPtr.Zero;
 
@@ -145,16 +147,16 @@ namespace Touch2PcPrinter
 
         private static class NativeMethods
         {
-            [DllImport("gsdll32.dll", CharSet = CharSet.Ansi, ExactSpelling = true, EntryPoint = "gsapi_new_instance")]
+            [DllImport("gsdll32", CharSet = CharSet.Ansi, ExactSpelling = true, EntryPoint = "gsapi_new_instance")]
             public static extern int gsapi_new_instance(ref IntPtr hInstance, IntPtr callingHandle);
 
-            [DllImport("gsdll32.dll", CharSet = CharSet.Ansi, ExactSpelling = true, EntryPoint = "gsapi_delete_instance")]
+            [DllImport("gsdll32", CharSet = CharSet.Ansi, ExactSpelling = true, EntryPoint = "gsapi_delete_instance")]
             public static extern int gsapi_delete_instance(IntPtr hInstance);
 
-            [DllImport("gsdll32.dll", CharSet = CharSet.Ansi, ExactSpelling = true, EntryPoint = "gsapi_init_with_args")]
-            public static extern int gsapi_init_with_args(IntPtr hInstance, int argc, string[] argv);
+            [DllImport("gsdll32", CharSet = CharSet.Ansi, ExactSpelling = true, EntryPoint = "gsapi_init_with_args")]
+            public static extern int gsapi_init_with_args(IntPtr hInstance, int argc, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1, ArraySubType = UnmanagedType.LPStr), In] string[] argv);
 
-            [DllImport("gsdll32.dll", CharSet = CharSet.Ansi, ExactSpelling = true, EntryPoint = "gsapi_exit")]
+            [DllImport("gsdll32", CharSet = CharSet.Ansi, ExactSpelling = true, EntryPoint = "gsapi_exit")]
             public static extern int gsapi_exit(IntPtr hInstance);
         }
 
